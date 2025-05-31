@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookie());
 const corOption = {
-    origin: "#", 
+    origin: "#",
     credentials: true
 }
 app.use(cors(corOption));
@@ -33,6 +33,10 @@ const start = async () => {
 }
 
 start();
+
+//custom routes api 
+import userRoutes from "./Routes/user.route.js";
+app.use("/api/v1/user", userRoutes);
 
 //test route
 app.get("/", (req, res) => {
