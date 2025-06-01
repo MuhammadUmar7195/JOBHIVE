@@ -112,8 +112,8 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
-        const file = req.file; 
-        
+        const file = req.file;
+
         if (!fullname || !email || !phoneNumber || !bio || !skills) {
             return res.status(400).json({
                 success: false,
@@ -121,11 +121,13 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        const skillArray = skills.split(",");
-        const userId = req.id; 
+        let skillArray;
+        if (skills) {
+            skillArray = skills.split(",");
+        }
+        const userId = req.id;
+        let user = await User.findById(userId);
 
-        const user = await User.findById(userId);
-        
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -133,11 +135,16 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        user.fullname = fullname;
-        user.email = email;
-        user.phoneNumber = phoneNumber;
-        user.profile.bio = bio;
-        user.profile.skills = skillArray;
+        if (fullname)
+            user.fullname = fullname;
+        if (email)
+            user.email = email;
+        if (phoneNumber)
+            user.phoneNumber = phoneNumber;
+        if (bio)
+            user.profile.bio = bio;
+        if (skills)
+            user.profile.skills = skillArray;
 
         await user.save();
         const updatedUser = {
