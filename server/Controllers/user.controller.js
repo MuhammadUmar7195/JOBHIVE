@@ -1,10 +1,15 @@
 import { User } from "../Models/user.model.js";
 import argon from "argon2";
 import jwt from "jsonwebtoken";
+import getDataUri from "../Utils/datauri.js";
+import cloudinary from "../Utils/cloudinary-setup.js";
 
 export const register = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, password, role } = req.body;
+        const file = req.file;
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
         if (!fullname || !email || !phoneNumber || !password || !role) {
             return res.status(400).json({
@@ -27,7 +32,10 @@ export const register = async (req, res) => {
             email,
             phoneNumber,
             password: hashedPassword,
-            role
+            role,
+            profile: {
+                profilePhoto: cloudResponse.secure_url
+            }
         })
         res.status(201).json({
             success: true,
@@ -113,6 +121,8 @@ export const updateProfile = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         const file = req.file;
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
         if (!fullname || !email || !phoneNumber || !bio || !skills) {
             return res.status(400).json({
@@ -145,6 +155,11 @@ export const updateProfile = async (req, res) => {
             user.profile.bio = bio;
         if (skills)
             user.profile.skills = skillArray;
+
+        if (cloudResponse) {
+            user.profile.resume = cloudResponse.secure_url;
+            user.profile.resumeOriginalName = file.originalName;
+        }
 
         await user.save();
         const updatedUser = {
