@@ -37,8 +37,11 @@ start();
 //custom routes api 
 import userRoutes from "./Routes/user.route.js";
 import companyRoutes from "./Routes/company.route.js";
+import jobRoute from "./Routes/job.route.js";
+
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/company", companyRoutes);
+app.use("/api/v1/job", jobRoute);
 
 //test route
 app.get("/", (req, res) => {
