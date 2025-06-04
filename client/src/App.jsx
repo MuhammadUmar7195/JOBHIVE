@@ -1,12 +1,19 @@
-import React from "react";
-import { Button } from "./components/ui/button";
-import NavBar from "./components/shared/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/auth/Login";
+import Signup from "./components/auth/Signup";
+import Home from "./components/Home";
 
 const App = () => {
   return (
-    <div className="flex p-5">
-      <NavBar/>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
