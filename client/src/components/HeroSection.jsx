@@ -1,5 +1,17 @@
 import { Link } from "react-router-dom";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Search } from "lucide-react";
+import { useState } from "react";
 
 const HeroSection = () => {
   const registrationData = [
@@ -11,6 +23,13 @@ const HeroSection = () => {
     { month: "Jun", Students: 120, Recruiters: 35 },
   ];
 
+  const [query, setQuery] = useState("");
+
+  const handleSubmitQuery = (e) => {
+    console.log(query);
+    e.preventDefault();
+  };
+
   return (
     <section className="relative mt-8 bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff] overflow-hidden">
       {/* Decorative Blobs */}
@@ -18,12 +37,13 @@ const HeroSection = () => {
         {/* Flex container for hero and chart */}
         <div className="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto py-16 gap-12">
           {/* Left: Hero Section */}
-          <div className="w-full lg:w-1/2">          
+          <div className="w-full lg:w-1/2">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 drop-shadow">
                 Find Your <span className="text-[#F83002]">Dream Job</span>
                 <br className="hidden lg:block" />
-                <span className="ml-2 mr-2">With</span><span className="text-indigo-600">Job Hive</span>
+                <span className="ml-2 mr-2">With</span>
+                <span className="text-indigo-600">Job Hive</span>
               </h1>
               <p className="mt-6 text-lg sm:text-xl text-gray-600 font-medium max-w-xl mx-auto lg:mx-0">
                 Discover thousands of opportunities, connect with top companies,
@@ -31,18 +51,24 @@ const HeroSection = () => {
                 starts here!
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
-                <Link
-                  to="/login"
-                  className="rounded-lg bg-[#F83002] px-6 py-3 text-lg font-semibold text-white shadow-md hover:bg-[#d72600] transition"
+                <form
+                  className="relative w-full max-w-md"
+                  onSubmit={handleSubmitQuery}
                 >
-                  Get Started
-                </Link>
-                <Link
-                  to="#"
-                  className="text-lg font-semibold text-indigo-600 hover:underline flex items-center gap-1 mt-3"
-                >
-                  Learn more <span aria-hidden="true">→</span>
-                </Link>
+                  <input
+                    type="text"
+                    placeholder="Find your dream jobs"
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="w-full py-3 pl-5 pr-32 rounded-full border border-gray-200 shadow focus:ring-2 focus:ring-[#F83002] focus:outline-none text-base transition"
+                  />
+                  <Button
+                    type="submit"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#F83002] hover:bg-[#d72600] text-white px-6 py-2 font-semibold flex items-center gap-2 shadow transition cursor-pointer"
+                  >
+                    <Search className="h-5 w-5" />
+                    Search
+                  </Button>
+                </form>
               </div>
             </div>
           </div>
@@ -64,26 +90,21 @@ const HeroSection = () => {
                     labelStyle={{ color: "#F83002", fontWeight: "bold" }}
                   />
                   <Legend verticalAlign="top" height={36} iconType="circle" />
-                  <Bar dataKey="Students" fill="#6366f1" radius={[8, 8, 0, 0]} />
-                  <Bar dataKey="Recruiters" fill="#F83002" radius={[8, 8, 0, 0]} />
+                  <Bar
+                    dataKey="Students"
+                    fill="#6366f1"
+                    radius={[8, 8, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="Recruiters"
+                    fill="#F83002"
+                    radius={[8, 8, 0, 0]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
         </div>
-      </div>
-      {/* Bottom Decorative Blob */}
-      <div
-        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-        aria-hidden="true"
-      >
-        <div
-          className="relative left-1/2 aspect-[1155/678] w-[72rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        ></div>
       </div>
     </section>
   );

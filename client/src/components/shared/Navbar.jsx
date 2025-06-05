@@ -25,12 +25,12 @@ const Navbar = () => {
             <Link to="/" className="hover:text-[#F83002] cursor-pointer transition">
               Home
             </Link>
-            <li className="hover:text-[#F83002] cursor-pointer transition">
+            <Link to="#" className="hover:text-[#F83002] cursor-pointer transition">
               Job
-            </li>
-            <li className="hover:text-[#F83002] cursor-pointer transition">
+            </Link>
+            <Link to="/browse" className="hover:text-[#F83002] cursor-pointer transition">
               Browse
-            </li>
+            </Link>
           </ul>
           {!user ? (
             <div className="flex gap-2">
