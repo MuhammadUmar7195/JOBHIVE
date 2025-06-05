@@ -3,8 +3,10 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -12,16 +14,46 @@ const Login = () => {
     password: "",
     role: "student",
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("email", data?.email);
+    formData.append("password", data?.password);
+    formData.append("role", data?.role);
+    try {
+      const res = await axios.post(
+        `/api/v1/user/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
+    <div className="min-h-screen mt-8 bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form className="w-full max-w-md bg-white border border-gray-100 shadow-xl rounded-2xl p-8 my-12">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-white border border-gray-100 shadow-xl rounded-2xl p-8 my-12"
+        >
           <h1 className="font-extrabold text-3xl text-center mb-2 text-[#F83002] tracking-tight">
             Login
           </h1>
