@@ -7,8 +7,12 @@ import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/store/Slices/auth.slice";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
+  const { loading } = useSelector((state) => state?.auth);
   const [data, setData] = useState({
     fullname: "",
     email: "",
@@ -19,6 +23,7 @@ const Signup = () => {
   });
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -44,16 +49,13 @@ const Signup = () => {
     }
 
     try {
-      const res = await axios.post(
-        "/api/v1/user/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      dispatch(setLoading(true));
+      const res = await axios.post("/api/v1/user/register", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }
@@ -61,8 +63,11 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
+
   return (
     <div className="mt-8">
       <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
@@ -192,12 +197,22 @@ const Signup = () => {
                 </div>
               </div>
             </div>
-            <Button
-              type="submit"
-              className="w-full bg-[#F83002] hover:bg-[#d72600] text-white font-bold py-2 rounded-lg transition cursor-pointer"
-            >
-              Create Account
-            </Button>
+            {loading ? (
+              <Button className="w-full my-4">
+                {" "}
+                <Loader2 className="mr-2 h-4 w-4 animate-spin">
+                  {" "}
+                  Please wait...
+                </Loader2>{" "}
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="w-full bg-[#F83002] hover:bg-[#d72600] text-white font-bold py-2 rounded-lg transition cursor-pointer"
+              >
+                Create Account
+              </Button>
+            )}
             <p className="text-center text-sm text-gray-500 mt-4">
               Already have an account?{" "}
               <Link

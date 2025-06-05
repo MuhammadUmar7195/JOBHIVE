@@ -5,16 +5,21 @@ import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { setLoading } from "@/store/Slices/auth.slice";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
+  const { loading } = useSelector((state) => state?.auth);
   const [data, setData] = useState({
     email: "",
     password: "",
     role: "student",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -26,16 +31,13 @@ const Login = () => {
     formData.append("password", data?.password);
     formData.append("role", data?.role);
     try {
-      const res = await axios.post(
-        `/api/v1/user/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      dispatch(setLoading(true));
+      const res = await axios.post(`/api/v1/user/login`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }
@@ -43,6 +45,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -119,12 +123,20 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
-          <Button
-            type="submit"
-            className="w-full bg-[#F83002] hover:bg-[#d72600] text-white font-bold py-2 rounded-lg transition cursor-pointer"
-          >
-            Login
-          </Button>
+          {loading ? (
+            <Button className="w-full my-4">
+              {" "}
+              <Loader2 className="mr-2 h-4 w-4 animate-spin"> Please wait...</Loader2>{" "}
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="w-full bg-[#F83002] hover:bg-[#d72600] text-white font-bold py-2 rounded-lg transition cursor-pointer"
+            >
+              Login
+            </Button>
+          )}
+
           <p className="text-center text-sm text-gray-500 mt-4">
             If you don't have an account?{" "}
             <Link
