@@ -6,13 +6,13 @@ import Footer from "./shared/Footer";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <HeroSection/>
       <CategoryCarousel/>
       <LatestJob/>
-      {/* <Footer/> */}
-    </div>
+      <Footer/>
+    </>
   );
 };
 

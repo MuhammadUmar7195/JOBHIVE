@@ -11,16 +11,18 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import authSlice  from './Slices/auth.slice';
+import authSlice from './Slices/auth.slice';
+import jobSlice from './Slices/jobs.slice';
 
 const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage,
+  key: 'root',
+  version: 1,
+  storage,
 }
 
 const rootReducer = combineReducers({
   auth: authSlice,
+  job: jobSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

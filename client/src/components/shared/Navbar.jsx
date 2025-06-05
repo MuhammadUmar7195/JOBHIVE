@@ -25,7 +25,7 @@ const Navbar = () => {
             <Link to="/" className="hover:text-[#F83002] cursor-pointer transition">
               Home
             </Link>
-            <Link to="#" className="hover:text-[#F83002] cursor-pointer transition">
+            <Link to="/jobs" className="hover:text-[#F83002] cursor-pointer transition">
               Job
             </Link>
             <Link to="/browse" className="hover:text-[#F83002] cursor-pointer transition">
