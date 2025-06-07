@@ -3,12 +3,38 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 import { Button } from "../ui/button.jsx";
 import { LogOut, User2, Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { setUser } from "@/store/Slices/auth.slice.js";
 
 const Navbar = () => {
-  let user;
+  const { user } = useSelector((state) => state?.auth);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      const res = await axios.get(`/api/v1/user/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+
+      if (res?.data?.success) {
+        dispatch(setUser(null));
+        navigate("/login");
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
   return (
     <nav className="bg-white w-full shadow-sm fixed top-0 left-0 z-50">
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-4 md:px-6 h-16">
@@ -22,13 +48,22 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-12">
           <ul className="flex font-medium items-center gap-6">
-            <Link to="/" className="hover:text-[#F83002] cursor-pointer transition">
+            <Link
+              to="/"
+              className="hover:text-[#F83002] cursor-pointer transition"
+            >
               Home
             </Link>
-            <Link to="/jobs" className="hover:text-[#F83002] cursor-pointer transition">
+            <Link
+              to="/jobs"
+              className="hover:text-[#F83002] cursor-pointer transition"
+            >
               Job
             </Link>
-            <Link to="/browse" className="hover:text-[#F83002] cursor-pointer transition">
+            <Link
+              to="/browse"
+              className="hover:text-[#F83002] cursor-pointer transition"
+            >
               Browse
             </Link>
           </ul>
@@ -74,7 +109,7 @@ const Navbar = () => {
                   <div>
                     <h4 className="font-medium">Umar Asif</h4>
                     <p className="text-sm text-muted-foreground">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      {user?.email}
                     </p>
                   </div>
                 </div>
@@ -87,7 +122,11 @@ const Navbar = () => {
                   </div>
                   <div className="flex w-fit items-center gap-2">
                     <LogOut size={22} />
-                    <Button className="cursor-pointer" variant="link">
+                    <Button
+                      onClick={handleLogout}
+                      className="cursor-pointer"
+                      variant="link"
+                    >
                       Logout
                     </Button>
                   </div>

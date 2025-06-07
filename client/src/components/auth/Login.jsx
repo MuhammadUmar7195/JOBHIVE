@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { setLoading } from "@/store/Slices/auth.slice";
+import { setLoading, setUser } from "@/store/Slices/auth.slice";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
@@ -39,9 +39,10 @@ const Login = () => {
         withCredentials: true,
       });
       if (res?.data?.success) {
+        dispatch(setUser(res?.data?.user));
+        navigate("/");
         toast.success(res?.data?.message);
       }
-      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || "Something went wrong");
