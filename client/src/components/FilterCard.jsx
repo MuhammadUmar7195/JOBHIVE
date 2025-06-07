@@ -5,31 +5,48 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Filter } from "lucide-react";
 
-const fitlerData = [
+const filterData = [
 	{
-		fitlerType: "Location",
+		filterType: "Location",
+		key: "location",
 		array: ["Lahore", "Karachi", "Multan", "Islamabad", "Faisalabad", "Quetta"],
 	},
 	{
-		fitlerType: "Industry",
-		array: ["Frontend Developer", "Backend Developer", "FullStack Developer", "Data Scientist", "Machine Learning Engineer", "DevOps Engineer"],
+		filterType: "Industry",
+		key: "industry",
+		array: [
+			"Frontend Developer",
+			"Backend Developer",
+			"FullStack Developer",
+			"Data Scientist",
+			"Machine Learning Engineer",
+			"DevOps Engineer",
+		],
 	},
 	{
-		fitlerType: "Salary",
-		array: ["0-40k", "42-1lakh", "1lakh to 5lakh"],
+		filterType: "Salary",
+		key: "salary",
+		array: ["0-40k", "42-1lakh", "1lakh to 5lakh", "5lakh to 10lakh", "10lakh+"],
 	},
 ];
 
 const FilterCard = () => {
-	const [selectedValue, setSelectedValue] = useState("");
+	const [filters, setFilters] = useState({
+		location: "",
+		industry: "",
+		salary: "",
+	});
 	const dispatch = useDispatch();
-	const changeHandler = (value) => {
-		setSelectedValue(value);
-	};
+
+	// Update Redux or parent with all filters
 	useEffect(() => {
-		dispatch(setSearchedQuery(selectedValue));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedValue]);
+		dispatch(setSearchedQuery(filters));
+	}, [filters, dispatch]);
+
+	// Handler for each filter group
+	const handleChange = (key, value) => {
+		setFilters((prev) => ({ ...prev, [key]: value }));
+	};
 
 	return (
 		<div className="mt-10">
@@ -41,42 +58,37 @@ const FilterCard = () => {
 					</h1>
 				</div>
 				<hr className="mb-4 border-[#f3e8ff]" />
-				<RadioGroup
-					value={selectedValue}
-					onValueChange={changeHandler}
-					className="space-y-6"
-				>
-					{fitlerData.map((data, index) => (
-						<div key={data.fitlerType} className="mb-2">
-							<h2 className="font-semibold text-[#6A38C2] text-base mb-2">
-								{data.fitlerType}
-							</h2>
-							<div className="flex flex-col gap-2">
-								{data.array.map((item, idx) => {
-									const itemId = `id${index}-${idx}`;
-									return (
-										<div
-											className="flex items-center space-x-2"
-											key={itemId}
+				{filterData.map((data, index) => (
+					<div key={data.filterType} className="mb-6">
+						<h2 className="font-semibold text-[#6A38C2] text-base mb-2">
+							{data.filterType}
+						</h2>
+						<RadioGroup
+							value={filters[data.key]}
+							onValueChange={(value) => handleChange(data.key, value)}
+							className="space-y-2"
+						>
+							{data.array.map((item, idx) => {
+								const itemId = `id${index}-${idx}`;
+								return (
+									<div className="flex items-center space-x-2" key={itemId}>
+										<RadioGroupItem
+											value={item}
+											id={itemId}
+											className="border-[#F83002] focus:ring-[#F83002]"
+										/>
+										<Label
+											htmlFor={itemId}
+											className="text-gray-700 cursor-pointer"
 										>
-											<RadioGroupItem
-												value={item}
-												id={itemId}
-												className="border-[#F83002] focus:ring-[#F83002]"
-											/>
-											<Label
-												htmlFor={itemId}
-												className="text-gray-700 cursor-pointer"
-											>
-												{item}
-											</Label>
-										</div>
-									);
-								})}
-							</div>
-						</div>
-					))}
-				</RadioGroup>
+											{item}
+										</Label>
+									</div>
+								);
+							})}
+						</RadioGroup>
+					</div>
+				))}
 			</div>
 		</div>
 	);

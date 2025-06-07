@@ -14,13 +14,21 @@ const Jobs = () => {
 
   useEffect(() => {
     if (searchedQuery) {
-      const filteredJobs = allJobs.filter((job) => 
-        job?.title?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-        job?.description?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-        job?.location?.toLowerCase().includes(searchedQuery.toLowerCase()) 
-      );
+      const filteredJobs = allJobs.filter((job) => {
+        const matchLocation =
+          !searchedQuery.location ||
+          job?.location?.toLowerCase() === searchedQuery.location.toLowerCase();
+        const matchIndustry =
+          !searchedQuery.industry ||
+          job?.title?.toLowerCase() === searchedQuery.industry.toLowerCase();
+        const matchSalary =
+          !searchedQuery.salary ||
+          (job?.salaryRange && job.salaryRange === searchedQuery.salary);
+
+        return matchLocation && matchIndustry && matchSalary;
+      });
       setFilterJobs(filteredJobs);
-    }else {
+    } else {
       setFilterJobs(allJobs);
     }
   }, [allJobs, searchedQuery]);

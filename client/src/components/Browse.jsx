@@ -1,10 +1,19 @@
 /* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import Navbar from "./shared/Navbar";
 import { useSelector } from "react-redux";
 import Job from "./Job";
+import { ArrowDownNarrowWide, Loader2 } from "lucide-react";
 
 const Browse = () => {
   const { allJobs } = useSelector((state) => state?.job || {});
+  const [visibleCount, setVisibleCount] = useState(9);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 9);
+  };
+
+  const jobsToShow = allJobs.slice(0, visibleCount);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
@@ -25,11 +34,24 @@ const Browse = () => {
             </span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allJobs.map((job) => (
-              <Job key={job?._id || job?.id || job?.title} job={job} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {jobsToShow.map((job) => (
+                <Job key={job?._id || job?.id || job?.title} job={job} />
+              ))}
+            </div>
+            {visibleCount < allJobs.length && (
+              <div className="flex justify-center mt-10">
+                <button
+                  onClick={handleLoadMore}
+                  className="px-5 py-3 rounded-full bg-[#F83002] text-white font-semibold shadow hover:bg-[#d72600] transition cursor-pointer flex items-center gap-3.5"
+                  >
+                  <ArrowDownNarrowWide/>
+                  Load More
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
