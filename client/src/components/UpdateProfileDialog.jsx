@@ -5,15 +5,17 @@ import {
   DialogTitle,
   DialogFooter,
   DialogContent,
-  DialogClose,
   DialogDescription,
 } from "./ui/dialog";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Loader2, X } from "lucide-react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "@/store/Slices/auth.slice";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     file: user?.profile?.resume || "",
   });
 
+  const dispatch = useDispatch();
+
   const changeEventHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -41,11 +45,32 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("fullname", data?.fullname);
+    formData.append("email", data?.email);
+    formData.append("phoneNumber", data?.phoneNumber);
+    formData.append("bio", data?.bio);
+    formData.append("skills", data?.skills);
+    if (data?.file) {
+      formData.append("file", data?.file);
+    }
     try {
-      alert("Implement later");
+      setLoading(true);
+      const res = await axios.post(`/api/v1/user/profile/update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+
+      if (res?.data?.success) {
+        dispatch(setUser(res?.data?.user));
+        toast.success("Updated successfully");
+      }
     } catch (error) {
+      toast.error(error?.response?.data?.message || "Something went wrong.");
+    } finally {
       setLoading(false);
-      console.log(error);
     }
   };
 
@@ -163,7 +188,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
           </div>
           <DialogFooter>
             {loading ? (
-              <Button className="w-full my-4" disabled>
+              <Button size="sm" className="w-full my-4" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
               </Button>
             ) : (

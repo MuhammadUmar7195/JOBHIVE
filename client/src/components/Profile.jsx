@@ -74,9 +74,9 @@ const Profile = () => {
           <div className="flex flex-wrap items-center gap-2">
             {hasSkills ? (
               user?.profile?.skills.map((item, index) => (
-                <Badge key={index} className="bg-[#f3e8ff] text-[#6A38C2] border border-[#e0d7fa] px-3 py-1 text-sm font-medium">
+                <span key={index} className="bg-[#f3e8ff] text-[#6A38C2] border border-[#e0d7fa] px-3 py-1 text-sm font-medium rounded-lg">
                   {item}
-                </Badge>
+                </span>
               ))
             ) : (
               <span className="text-gray-400">NA</span>
