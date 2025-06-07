@@ -4,8 +4,8 @@ import FilterCard from "./FilterCard.jsx";
 import Job from "./Job.jsx";
 import Navbar from "./shared/Navbar.jsx";
 import { useEffect, useState } from "react";
+import Footer from "./shared/Footer.jsx";
 
-// const  = [1, 12, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11];
 
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((state) => state?.job);
@@ -51,6 +51,7 @@ const Jobs = () => {
           </main>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

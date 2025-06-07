@@ -117,7 +117,7 @@ const Navbar = () => {
                   <div className="flex w-fit items-center gap-2">
                     <User2 size={22} />
                     <Button className="cursor-pointer" variant="link">
-                      View Profile
+                      <Link to="/profile">View Profile</Link>
                     </Button>
                   </div>
                   <div className="flex w-fit items-center gap-2">
@@ -195,7 +195,7 @@ const Navbar = () => {
                   <div className="font-medium">Umar Asif</div>
                   <div className="flex gap-2 mt-1">
                     <Button className="cursor-pointer" variant="link">
-                      View Profile
+                       <Link to="/profile">View Profile</Link>                
                     </Button>
                     <Button className="cursor-pointer" variant="link">
                       Logout
