@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Navbar from "./shared/Navbar";
@@ -9,84 +9,98 @@ import {
   Users,
   DollarSign,
 } from "lucide-react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleJob } from "@/store/Slices/jobs.slice";
 
 const JobDescription = () => {
-  // Dummy data for demonstration
-  const job = {
-    title: "Senior Frontend Developer",
-    company: "TechNova",
-    location: "Remote",
-    salary: "13 LPA",
-    positions: 2,
-    experience: "3 yrs",
-    applicants: 30,
-    posted: "2024-06-01",
-    description:
-      "Join our dynamic team to build beautiful UIs with React and Tailwind CSS. Collaborate with designers and backend engineers to deliver world-class products.",
-    role: "Frontend Developer",
-    skills: ["React", "Tailwind CSS", "Redux", "TypeScript"],
-  };
+  const { singleJob } = useSelector((state) => state?.job);
+console.log(singleJob);
+
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchSingleJob = async () => {
+      try {
+        const res = await axios.get(`/api/v1/job/get/${id}`, {
+          withCredentials: true,
+        });
+
+        if (res?.data?.success) {
+          dispatch(setSingleJob(res?.data?.job));
+        }
+      } catch (error) {
+        console.log("Fetch single job error: ", error);
+      }
+    };
+
+    if (id) fetchSingleJob();
+  }, [dispatch, id]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff] pb-10">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff] pb-16">
       <Navbar />
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 mt-16 p-8">
+      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-200 mt-16 p-8 md:p-12">
         {/* Header */}
         <div className="">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10 mb-10">
             <div>
-              <h1 className="font-extrabold text-2xl text-[#F83002] flex items-center gap-2">
-                <Briefcase className="w-6 h-6 text-[#6A38C2]" />
-                {job.title}
+              <h1 className="font-extrabold text-3xl md:text-4xl text-[#F83002] flex items-center gap-3 mb-4">
+                <Briefcase className="w-8 h-8 text-[#6A38C2]" />
+                {singleJob?.title || "Job Title"}
               </h1>
-              <div className="flex flex-wrap items-center gap-2 mt-4">
-                <Badge className="bg-blue-50 text-blue-700 font-bold border border-blue-100">
-                  {job.positions} Positions
+              <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
+                <Badge className="bg-blue-50 text-blue-700 font-bold border border-blue-100 px-4 py-2">
+                  {singleJob?.position || 0} Positions
                 </Badge>
-                <Badge className="bg-[#fff0ee] text-[#F83002] font-bold border border-[#ffe5e0]">
-                  {job.location}
+                <Badge className="bg-[#fff0ee] text-[#F83002] font-bold border border-[#ffe5e0] px-4 py-2">
+                  {singleJob?.location || "N/A"}
                 </Badge>
-                <Badge className="bg-purple-50 text-[#7209b7] font-bold border border-purple-100">
-                  {job.salary}
+                <Badge className="bg-purple-50 text-[#7209b7] font-bold border border-purple-100 px-4 py-2">
+                  {singleJob?.salary || "N/A"}
                 </Badge>
-                <Badge className="bg-green-50 text-green-700 font-bold border border-green-100">
-                  {job.experience} Exp
+                <Badge className="bg-green-50 text-green-700 font-bold border border-green-100 px-4 py-2">
+                  {singleJob?.experienceLevel || "N/A"} Exp
                 </Badge>
               </div>
-              <div className="flex items-center gap-4 mt-4 text-gray-500 text-sm">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" /> {job.location}
+              <div className="flex flex-wrap items-center gap-6 mt-6 text-gray-500 text-base">
+                <span className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5" /> {singleJob?.location || "N/A"}
                 </span>
-                <span className="flex items-center gap-1">
-                  <CalendarDays className="w-4 h-4" /> Posted: {job.posted}
+                <span className="flex items-center gap-2">
+                  <CalendarDays className="w-5 h-5" /> Posted: {singleJob?.createdAt.split("T")[0]}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Users className="w-4 h-4" /> {job.applicants} Applicants
+                <span className="flex items-center gap-2">
+                  <Users className="w-5 h-5" /> {singleJob?.applications?.length || 0} Applicants
                 </span>
               </div>
             </div>
-            <Button className="rounded-full px-8 py-3 font-bold bg-[#F83002] hover:bg-[#d72600] text-white shadow-lg text-lg transition cursor-pointer">
+            <Button className="rounded-full px-10 py-4 font-bold bg-[#F83002] hover:bg-[#d72600] text-white shadow-lg text-lg transition cursor-pointer mt-8 md:mt-0">
               Apply Now
             </Button>
           </div>
         </div>
         {/* Description */}
-        <div className="border-b-2 border-b-gray-200 pb-4 mb-6">
-          <h2 className="font-bold text-lg text-[#6A38C2] mb-2">
+        <div className="border-b-2 border-b-gray-200 pb-6 mb-8">
+          <h2 className="font-bold text-2xl text-[#6A38C2] mb-3">
             Job Description
           </h2>
-          <p className="text-gray-700 leading-relaxed">{job.description}</p>
+          <p className="text-gray-700 leading-relaxed text-base">
+            {singleJob?.description || "No description available."}
+          </p>
         </div>
         {/* Details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
-            <h3 className="font-semibold text-[#F83002] mb-1">Role</h3>
-            <p className="text-gray-800 mb-4">{job.role}</p>
-            <h3 className="font-semibold text-[#F83002] mb-1">
+            <h3 className="font-semibold text-[#F83002] mb-2 text-lg">Role</h3>
+            <p className="text-gray-800 mb-6">{singleJob?.position || "N/A"}</p>
+            <h3 className="font-semibold text-[#F83002] mb-2 text-lg">
               Required Skills
             </h3>
             <div className="flex flex-wrap gap-2">
-              {job.skills.map((skill, idx) => (
+              {(singleJob?.requirements || []).map((skill, idx) => (
                 <Badge
                   key={idx}
                   className="bg-[#f3e8ff] text-[#6A38C2] border border-[#e0d7fa] px-3 py-1 text-sm font-medium"
@@ -97,14 +111,14 @@ const JobDescription = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-[#F83002] mb-1">Company</h3>
-            <p className="text-gray-800 mb-4">{job.company}</p>
-            <h3 className="font-semibold text-[#F83002] mb-1">Salary</h3>
-            <p className="text-gray-800 mb-4 flex items-center gap-1">
-              <DollarSign className="w-4 h-4" /> {job.salary}
+            <h3 className="font-semibold text-[#F83002] mb-2 text-lg">Salary</h3>
+            <p className="text-gray-800 mb-6 flex items-center gap-2">
+              <span className="text-gray-800">Rs.</span>{singleJob?.salary || "N/A"}
             </p>
-            <h3 className="font-semibold text-[#F83002] mb-1">Experience</h3>
-            <p className="text-gray-800">{job.experience}</p>
+            <h3 className="font-semibold text-[#F83002] mb-2 text-lg">Experience</h3>
+            <p className="text-gray-800 mb-6">{singleJob?.experienceLevel || "N/A"}</p>
+            <h3 className="font-semibold text-[#F83002] mb-2 text-lg">Job Type</h3>
+            <p className="text-gray-800 mb-6">{singleJob?.jobType || "N/A"}</p>
           </div>
         </div>
       </div>
