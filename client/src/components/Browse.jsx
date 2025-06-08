@@ -4,8 +4,10 @@ import Navbar from "./shared/Navbar";
 import { useSelector } from "react-redux";
 import Job from "./Job";
 import { ArrowDownNarrowWide, Loader2 } from "lucide-react";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 const Browse = () => {
+  useGetAllJobs(); // Fetch all jobs when the component mounts
   const { allJobs } = useSelector((state) => state?.job || {});
   const [visibleCount, setVisibleCount] = useState(9);
 

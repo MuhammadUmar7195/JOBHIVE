@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen mt-8 bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
+    <div className="min-h-screen mt-16 bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form

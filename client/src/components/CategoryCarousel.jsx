@@ -8,6 +8,7 @@ import {
 } from "../components/ui/carousel";
 import { Button } from "../components/ui/button";
 import { Briefcase, Code, Database, Image, Layers } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const category = [
   {
@@ -33,9 +34,14 @@ const category = [
 ];
 
 const CategoryCarousel = () => {
+  const navigate = useNavigate();
+
   const searchJobHandler = (query) => {
-    console.log(`Searching for jobs in category: ${query}`);
+    // You can also pass the category as a query param if needed
+    // navigate(`/jobs?category=${encodeURIComponent(query)}`);
+    navigate(`/jobs`)
   };
+
   return (
     <div className="w-full max-w-2xl mx-auto my-20">
       <h2 className="text-3xl font-bold text-center mb-8 text-[#F83002] tracking-tight">

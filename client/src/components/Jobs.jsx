@@ -5,9 +5,11 @@ import Job from "./Job.jsx";
 import Navbar from "./shared/Navbar.jsx";
 import { useEffect, useState } from "react";
 import Footer from "./shared/Footer.jsx";
+import useGetAllJobs from "@/hooks/useGetAllJobs.jsx";
 
 
 const Jobs = () => {
+  useGetAllJobs(); // Fetch all jobs when the component mounts
   const { allJobs, searchedQuery } = useSelector((state) => state?.job);
 
   const [filterJobs, setFilterJobs] = useState(allJobs);
