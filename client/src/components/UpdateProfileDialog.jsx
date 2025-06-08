@@ -54,6 +54,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     if (data?.file) {
       formData.append("file", data?.file);
     }
+    
     try {
       setLoading(true);
       const res = await axios.post(`/api/v1/user/profile/update`, formData, {
@@ -66,6 +67,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       if (res?.data?.success) {
         dispatch(setUser(res?.data?.user));
         toast.success("Updated successfully");
+        setOpen(false);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong.");

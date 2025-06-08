@@ -32,6 +32,7 @@ const Jobs = () => {
       setFilterJobs(allJobs);
     }
   }, [allJobs, searchedQuery]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff]">
       <Navbar />
@@ -52,7 +53,7 @@ const Jobs = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filterJobs.map((job) => (
-                  <Job key={job} job={job} />
+                  <Job key={job?._id} job={job} />
                 ))}
               </div>
             )}

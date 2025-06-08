@@ -4,7 +4,7 @@ import { postJob, getJobById, getAllJob, getAdminJob } from "../Controllers/job.
 import { isAuthenticated } from "../Middleware/isAuthenticated.js";
 
 router.post("/post", isAuthenticated, postJob);
-router.get("/get", isAuthenticated, getAllJob);
+router.get("/get", getAllJob);
 router.get("/get/:id", isAuthenticated, getJobById);
 router.get("/getadminjobs", isAuthenticated, getAdminJob);
 

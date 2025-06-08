@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setAllJobs } from "@/store/Slices/jobs.slice";
+import { setAllJobs, setSearchedQuery } from "@/store/Slices/jobs.slice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import axios from "axios";

@@ -91,7 +91,10 @@ const Navbar = () => {
               <PopoverTrigger>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -101,35 +104,48 @@ const Navbar = () => {
                 <div className="flex gap-4 space-y-2">
                   <Avatar className="cursor-pointer">
                     <AvatarImage
-                      src="https://github.com/shadcn.png"
+                      src={
+                        user?.profile?.profilePhoto ||
+                        "https://github.com/shadcn.png"
+                      }
                       alt="@shadcn"
                     />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>
+                      {user?.fullname
+                        ? user.fullname
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()
+                        : "U"}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h4 className="font-medium">Umar Asif</h4>
+                    <h4 className="font-medium">{user?.fullname}</h4>
                     <p className="text-sm text-muted-foreground">
                       {user?.email}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col items-start text-sm mt-4">
-                  <div className="flex w-fit items-center gap-2">
-                    <User2 size={22} />
-                    <Button className="cursor-pointer" variant="link">
-                      <Link to="/profile">View Profile</Link>
-                    </Button>
-                  </div>
-                  <div className="flex w-fit items-center gap-2">
-                    <LogOut size={22} />
-                    <Button
-                      onClick={handleLogout}
-                      className="cursor-pointer"
-                      variant="link"
-                    >
-                      Logout
-                    </Button>
-                  </div>
+                <div className="flex flex-col gap-2 mt-4">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="justify-start w-full text-[#6A38C2] hover:bg-[#f3e8ff] hover:text-[#F83002] font-semibold gap-2 cursor-pointer"
+                  >
+                    <Link to="/profile">
+                      <User2 size={18} className="mr-2" />
+                      View Profile
+                    </Link>
+                  </Button>
+                  <Button
+                    onClick={handleLogout}
+                    variant="ghost"
+                    className="justify-start w-full text-[#F83002] hover:bg-[#fff0ee] hover:text-[#d72600] font-semibold gap-2 cursor-pointer"
+                  >
+                    <LogOut size={18} className="mr-2" />
+                    Logout
+                  </Button>
                 </div>
               </PopoverContent>
             </Popover>
@@ -152,15 +168,24 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col font-medium gap-2 px-6 py-4 items-center justify-center">
-            <li className="hover:text-[#F83002] cursor-pointer py-2 transition">
+            <Link
+              to="/"
+              className="hover:text-[#F83002] cursor-pointer py-2 transition"
+            >
               Home
-            </li>
-            <li className="hover:text-[#F83002] cursor-pointer py-2 transition">
+            </Link>
+            <Link
+              to="/jobs"
+              className="hover:text-[#F83002] cursor-pointer py-2 transition"
+            >
               Job
-            </li>
-            <li className="hover:text-[#F83002] cursor-pointer py-2 transition">
+            </Link>
+            <Link
+              to="/browse"
+              className="hover:text-[#F83002] cursor-pointer py-2 transition"
+            >
               Browse
-            </li>
+            </Link>
           </ul>
           <div className="flex flex-col gap-2 px-6 pb-4">
             {!user ? (
@@ -183,25 +208,45 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <div className="flex items-center gap-3 mt-2">
-                <Avatar className="cursor-pointer">
+              <div className="flex flex-col items-center gap-2 mt-4 w-full">
+                <Avatar className="h-12 w-12">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
+                    alt={user?.fullname || "@user"}
                   />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>
+                    {user?.fullname
+                      ? user.fullname
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()
+                      : "U"}
+                  </AvatarFallback>
                 </Avatar>
-                <div>
-                  <div className="font-medium">Umar Asif</div>
-                  <div className="flex gap-2 mt-1">
-                    <Button className="cursor-pointer" variant="link">
-                       <Link to="/profile">View Profile</Link>                
-                    </Button>
-                    <Button className="cursor-pointer" variant="link">
-                      Logout
-                    </Button>
-                  </div>
+                <div className="font-semibold text-base mt-1">
+                  {user?.fullname}
                 </div>
+                <div className="text-xs text-gray-500 mb-2">
+                  {user?.email}
+                </div>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full mb-2 bg-gray-100 border border-gray-200 text-[#6A38C2] hover:bg-[#6A38C2] hover:text-white transition cursor-pointer"
+                >
+                  <Link to="/profile">View Profile</Link>
+                </Button>
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="w-full bg-[#fff0ee] border border-[#ffd6cc] text-[#F83002] hover:bg-[#F83002] hover:text-white transition cursor-pointer"
+                >
+                  Logout
+                </Button>
               </div>
             )}
           </div>

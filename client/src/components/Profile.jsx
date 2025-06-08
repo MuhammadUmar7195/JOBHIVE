@@ -36,7 +36,7 @@ const Profile = () => {
           <div className="flex items-center gap-6">
             <Avatar className="h-28 w-28 shadow-lg border-2 border-[#F83002]">
               <AvatarImage
-                src={user?.profile?.avatar || "https://github.com/shadcn.png"}
+                src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
                 alt={user?.fullname}
                 className=" object-cover"
               />

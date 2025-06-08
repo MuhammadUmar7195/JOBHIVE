@@ -30,7 +30,7 @@ const Signup = () => {
   };
   const fileHandleChange = (e) => {
     const file = e.target.files[0];
-    setData({ ...data, [e.target.name]: e.target.file?.[0] });
+    setData({ ...data, file });
     if (file) {
       setImagePreview(URL.createObjectURL(file));
     }
@@ -45,15 +45,12 @@ const Signup = () => {
     formData.append("password", data?.password);
     formData.append("role", data?.role);
     if (data?.file) {
-      formData.append("file", data?.file);
+      formData.append("file", data?.file); 
     }
 
     try {
       dispatch(setLoading(true));
       const res = await axios.post("/api/v1/user/register", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
         withCredentials: true,
       });
       if (res?.data?.success) {

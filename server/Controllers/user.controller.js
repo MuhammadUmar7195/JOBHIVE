@@ -8,25 +8,32 @@ export const register = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, password, role } = req.body;
         const file = req.file;
+
         if (!fullname || !email || !phoneNumber || !password || !role) {
             return res.status(400).json({
                 success: false,
                 message: "Something is missing"
             });
         }
-        let cloudResponse = { secure_url: "" };
-        if (file) {
-            const fileUri = getDataUri(file);
-            cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        }
 
-        const user = await User.findOne({ email });
+        const userExist = await User.findOne({ email });
 
-        if (user) {
+        if (userExist) {
             return res.status(400).json({
                 success: false,
                 message: 'User already exist with this email.',
             });
+        }
+
+        let profilePhoto = ""; 
+
+        if (file) {
+            const fileUri = getDataUri(file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: "jobhive/avatar-profile",
+                resource_type: "auto", 
+            });
+            profilePhoto = cloudResponse.secure_url;
         }
         const hashedPassword = await argon.hash(password);
 
@@ -37,13 +44,13 @@ export const register = async (req, res) => {
             password: hashedPassword,
             role,
             profile: {
-                profilePhoto: cloudResponse.secure_url
+                profilePhoto: profilePhoto
             }
-        })
+        });
         res.status(201).json({
             success: true,
             message: 'Account Created Successfully.',
-        })
+        });
     } catch (error) {
         console.log("Register error", error);
     }
@@ -125,12 +132,6 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         const file = req.file;
 
-        let cloudResponse;
-        if (file) {
-            const fileUri = getDataUri(file);
-            cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        }
-
         if (!fullname || !email || !phoneNumber || !bio || !skills) {
             return res.status(400).json({
                 success: false,
@@ -155,7 +156,13 @@ export const updateProfile = async (req, res) => {
         user.profile.bio = bio;
         user.profile.skills = skillArray;
 
-        if (cloudResponse) {
+        if (file) {
+            const fileUri = getDataUri(file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: "jobhive/resume",
+                resource_type: "raw",
+                type: "upload"
+            });
             user.profile.resume = cloudResponse.secure_url;
             user.profile.resumeOriginalName = file.originalname;
         }
