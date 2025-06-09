@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { setUser } from "@/store/Slices/auth.slice.js";
+import { USER_API_ENDPOINT } from "../../utils/api.constant.js";; 
 
 const Navbar = () => {
   const { user } = useSelector((state) => state?.auth);
@@ -18,7 +19,7 @@ const Navbar = () => {
   // Handle Logout
   const handleLogout = async () => {
     try {
-      const res = await axios.get(`/api/v1/user/logout`, {
+      const res = await axios.get(`${USER_API_ENDPOINT}/logout`, {
         headers: {
           "Content-Type": "application/json",
         },

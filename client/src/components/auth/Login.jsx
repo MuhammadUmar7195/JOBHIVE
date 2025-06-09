@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { setLoading, setUser } from "@/store/Slices/auth.slice";
 import { Loader2 } from "lucide-react";
+import { USER_API_ENDPOINT } from "../../utils/api.constant.js";
 
 const Login = () => {
   const { loading } = useSelector((state) => state?.auth);
@@ -32,7 +33,7 @@ const Login = () => {
     formData.append("role", data?.role);
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`/api/v1/user/login`, formData, {
+      const res = await axios.post(`${USER_API_ENDPOINT}/login`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -127,7 +128,10 @@ const Login = () => {
           {loading ? (
             <Button className="w-full my-4">
               {" "}
-              <Loader2 className="mr-2 h-4 w-4 animate-spin"> Please wait...</Loader2>{" "}
+              <Loader2 className="mr-2 h-4 w-4 animate-spin">
+                {" "}
+                Please wait...
+              </Loader2>{" "}
             </Button>
           ) : (
             <Button

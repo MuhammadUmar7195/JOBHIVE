@@ -14,8 +14,9 @@ import { Button } from "./ui/button";
 import { Loader2, X } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { setUser } from "@/store/Slices/auth.slice";
+import { USER_API_ENDPOINT } from "../utils/api.constant.js"; // Adjust the import path as necessary
+
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
@@ -57,7 +58,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     
     try {
       setLoading(true);
-      const res = await axios.post(`/api/v1/user/profile/update`, formData, {
+      const res = await axios.post(`${USER_API_ENDPOINT}/profile/update`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/store/Slices/auth.slice";
 import { Loader2 } from "lucide-react";
+import { USER_API_ENDPOINT } from "../../utils/api.constant.js"; // Adjust the import path as necessary
 
 const Signup = () => {
   const { loading } = useSelector((state) => state?.auth);
@@ -45,12 +46,12 @@ const Signup = () => {
     formData.append("password", data?.password);
     formData.append("role", data?.role);
     if (data?.file) {
-      formData.append("file", data?.file); 
+      formData.append("file", data?.file);
     }
 
     try {
       dispatch(setLoading(true));
-      const res = await axios.post("/api/v1/user/register", formData, {
+      const res = await axios.post(`${USER_API_ENDPOINT}/user/register`, formData, {
         withCredentials: true,
       });
       if (res?.data?.success) {

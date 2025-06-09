@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/store/Slices/jobs.slice";
 import toast from "react-hot-toast";
 import { MoonLoader } from "react-spinners";
+import { JOB_API_ENDPOINT, APPLICATION_API_ENDPOINT } from "../utils/api.constant.js"; // Adjust the import path as necessary
 
 const JobDescription = () => {
   const { user } = useSelector((state) => state?.auth);
@@ -29,7 +30,7 @@ const JobDescription = () => {
     const fetchSingleJob = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`/api/v1/job/get/${id}`, {
+        const res = await axios.get(`${JOB_API_ENDPOINT}/get/${id}`, {
           withCredentials: true,
         });
 
@@ -58,7 +59,7 @@ const JobDescription = () => {
     }
 
     try {
-      const res = await axios.get(`/api/v1/application/apply/${id}`, {
+      const res = await axios.get(`${APPLICATION_API_ENDPOINT}/application/apply/${id}`, {
         withCredentials: true,
       });
 
@@ -97,7 +98,7 @@ const JobDescription = () => {
               <div>
                 <h1 className="font-extrabold text-3xl md:text-4xl text-[#F83002] flex items-center gap-3 mb-4">
                   <Briefcase className="w-8 h-8 text-[#6A38C2]" />
-                  {singleJob?.title || "Job Title"}
+                  {singleJob?.title.toUpperCase() || "Job Title"}
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
                   <Badge className="bg-blue-50 text-blue-700 font-bold border border-blue-100 px-4 py-2">
@@ -130,17 +131,34 @@ const JobDescription = () => {
                   </span>
                 </div>
               </div>
-              <Button
-                onClick={isApplied ? null : handleApply}
-                disabled={isApplied}
-                className={`rounded-lg ${
-                  isApplied
-                    ? "bg-gray-600 cursor-not-allowed"
-                    : "bg-[#7209b7] hover:bg-[#5f32ad]"
-                }`}
-              >
-                {isApplied ? "Already Applied" : "Apply Now"}
-              </Button>
+              {isApplied ? (
+                <Button
+                  disabled
+                  className="rounded-lg bg-green-100 border border-green-400 text-green-700 font-semibold flex items-center gap-2 px-8 py-3 shadow transition-all duration-200 cursor-not-allowed"
+                >
+                  <svg
+                    className="w-5 h-5 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Already Applied
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleApply}
+                  className="rounded-lg bg-[#7209b7] hover:bg-[#5f32ad] text-white font-bold px-8 py-3 shadow transition-all duration-200 cursor-pointer"
+                >
+                  Apply Now
+                </Button>
+              )}
             </div>
           </div>
           {/* Description */}

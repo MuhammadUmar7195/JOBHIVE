@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import { setAllJobs, setSearchedQuery } from "@/store/Slices/jobs.slice";
-import toast from "react-hot-toast";
+import { setAllJobs } from "@/store/Slices/jobs.slice";
 import { useEffect } from "react";
 import axios from "axios";
+import { JOB_API_ENDPOINT } from "@/utils/api.constant";
 
 const useGetAllJobs = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const useGetAllJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(`/api/v1/job/get`, {
+        const res = await axios.get(`${JOB_API_ENDPOINT}/job/get`, {
           withCredentials: true,
         });
 
@@ -19,7 +19,6 @@ const useGetAllJobs = () => {
         }
       } catch (error) {
         console.log(error);
-        toast.error("Something went wrong while fetching jobs");
       }
     };
     fetchJobs();
