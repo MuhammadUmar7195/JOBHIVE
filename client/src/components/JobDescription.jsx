@@ -59,7 +59,7 @@ const JobDescription = () => {
     }
 
     try {
-      const res = await axios.get(`${APPLICATION_API_ENDPOINT}/application/apply/${id}`, {
+      const res = await axios.get(`${APPLICATION_API_ENDPOINT}/apply/${id}`, {
         withCredentials: true,
       });
 

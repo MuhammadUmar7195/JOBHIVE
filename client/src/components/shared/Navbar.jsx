@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { setUser } from "@/store/Slices/auth.slice.js";
-import { USER_API_ENDPOINT } from "../../utils/api.constant.js";; 
+import { USER_API_ENDPOINT } from "../../utils/api.constant.js";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state?.auth);
@@ -48,26 +48,43 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-12">
-          <ul className="flex font-medium items-center gap-6">
-            <Link
-              to="/"
-              className="hover:text-[#F83002] cursor-pointer transition"
-            >
-              Home
-            </Link>
-            <Link
-              to="/jobs"
-              className="hover:text-[#F83002] cursor-pointer transition"
-            >
-              Job
-            </Link>
-            <Link
-              to="/browse"
-              className="hover:text-[#F83002] cursor-pointer transition"
-            >
-              Browse
-            </Link>
-          </ul>
+          {user && user?.role === "recruiter" ? (
+            <>
+              <Link
+                to="/admin/companies"
+                className="hover:text-[#F83002] cursor-pointer transition"
+              >
+                Companies
+              </Link>
+              <Link
+                to="/admin/jobs"
+                className="hover:text-[#F83002] cursor-pointer transition"
+              >
+                Jobs
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/"
+                className="hover:text-[#F83002] cursor-pointer transition"
+              >
+                Home
+              </Link>
+              <Link
+                to="/jobs"
+                className="hover:text-[#F83002] cursor-pointer transition"
+              >
+                Job
+              </Link>
+              <Link
+                to="/browse"
+                className="hover:text-[#F83002] cursor-pointer transition"
+              >
+                Browse
+              </Link>
+            </>
+          )}
           {!user ? (
             <div className="flex gap-2">
               <Link to={`/login`}>
@@ -129,16 +146,20 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 mt-4">
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="justify-start w-full text-[#6A38C2] hover:bg-[#f3e8ff] hover:text-[#F83002] font-semibold gap-2 cursor-pointer"
-                  >
-                    <Link to="/profile">
-                      <User2 size={18} className="mr-2" />
-                      View Profile
-                    </Link>
-                  </Button>
+                  {user && user?.role === "student" ? (
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="justify-start w-full text-[#6A38C2] hover:bg-[#f3e8ff] hover:text-[#F83002] font-semibold gap-2 cursor-pointer"
+                    >
+                      <Link to="/profile">
+                        <User2 size={18} className="mr-2" />
+                        View Profile
+                      </Link>
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
                   <Button
                     onClick={handleLogout}
                     variant="ghost"
@@ -169,24 +190,43 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col font-medium gap-2 px-6 py-4 items-center justify-center">
-            <Link
-              to="/"
-              className="hover:text-[#F83002] cursor-pointer py-2 transition"
-            >
-              Home
-            </Link>
-            <Link
-              to="/jobs"
-              className="hover:text-[#F83002] cursor-pointer py-2 transition"
-            >
-              Job
-            </Link>
-            <Link
-              to="/browse"
-              className="hover:text-[#F83002] cursor-pointer py-2 transition"
-            >
-              Browse
-            </Link>
+            {user && user?.role === "recruiter" ? (
+              <>
+                <Link
+                  to="/admin/companies"
+                  className="hover:text-[#F83002] cursor-pointer py-2 transition"
+                >
+                  Companies
+                </Link>
+                <Link
+                  to="/admin/jobs"
+                  className="hover:text-[#F83002] cursor-pointer py-2 transition"
+                >
+                  Job
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/"
+                  className="hover:text-[#F83002] cursor-pointer py-2 transition"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/jobs"
+                  className="hover:text-[#F83002] cursor-pointer py-2 transition"
+                >
+                  Job
+                </Link>
+                <Link
+                  to="/browse"
+                  className="hover:text-[#F83002] cursor-pointer py-2 transition"
+                >
+                  Browse
+                </Link>
+              </>
+            )}
           </ul>
           <div className="flex flex-col gap-2 px-6 pb-4">
             {!user ? (
@@ -231,16 +271,18 @@ const Navbar = () => {
                 <div className="font-semibold text-base mt-1">
                   {user?.fullname}
                 </div>
-                <div className="text-xs text-gray-500 mb-2">
-                  {user?.email}
-                </div>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="w-full mb-2 bg-gray-100 border border-gray-200 text-[#6A38C2] hover:bg-[#6A38C2] hover:text-white transition cursor-pointer"
-                >
-                  <Link to="/profile">View Profile</Link>
-                </Button>
+                <div className="text-xs text-gray-500 mb-2">{user?.email}</div>
+                {user && user?.role === "student" ? (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full mb-2 bg-gray-100 border border-gray-200 text-[#6A38C2] hover:bg-[#6A38C2] hover:text-white transition cursor-pointer"
+                  >
+                    <Link to="/profile">View Profile</Link>
+                  </Button>
+                ) : (
+                  <></>
+                )}
                 <Button
                   onClick={handleLogout}
                   variant="outline"

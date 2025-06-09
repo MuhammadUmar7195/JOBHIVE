@@ -80,13 +80,11 @@ const Job = ({ job }) => {
           <Button
             onClick={() => navigate(`/description/${job?._id}`)}
             variant="outline"
-            className="cursor-pointer"
+            className="cursor-pointer hover:bg-gray-100 transition"
           >
             Details
           </Button>
-          <Button className="bg-[#7209b7] cursor-pointer">
-            Save For Later
-          </Button>
+          
         </div>
       </div>
     </div>

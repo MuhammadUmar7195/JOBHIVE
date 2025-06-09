@@ -30,11 +30,7 @@ const Login = () => {
     const formData = new FormData();
     formData.append("email", data?.email);
     formData.append("password", data?.password);
-    formData.append("role", data?.role);
-    console.log("Form Data:", data);
-    console.log("Form Data Object:", formData);
-    
-    
+    formData.append("role", data?.role); 
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, formData, {

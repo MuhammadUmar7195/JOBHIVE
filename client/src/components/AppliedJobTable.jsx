@@ -10,52 +10,31 @@ import {
 } from "./ui/table";
 import { Badge } from "./ui/badge";
 import { BadgeCheckIcon, Clock, XCircle, Loader2 } from "lucide-react";
-
-// Dummy data for demonstration
-const appliedJobs = [
-  {
-    date: "2024-06-01",
-    title: "Frontend Developer",
-    company: "TechNova",
-    status: "accepted",
-  },
-  {
-    date: "2024-05-20",
-    title: "Backend Developer",
-    company: "DataWorks",
-    status: "pending",
-  },
-  {
-    date: "2024-05-10",
-    title: "UI/UX Designer",
-    company: "Designify",
-    status: "rejected",
-  },
-];
+import { useSelector } from "react-redux";
 
 const statusBadge = (status) => {
   switch (status) {
     case "accepted":
       return (
-        <Badge className="bg-green-100 text-green-800 flex items-center gap-1">
+        <Badge className="bg-green-100 text-green-800 flex items-center gap-1 px-3 py-1 rounded-full font-semibold">
           <BadgeCheckIcon className="w-4 h-4" /> Accepted
         </Badge>
       );
     case "pending":
       return (
-        <Badge className="bg-yellow-100 text-yellow-800 flex items-center gap-1">
+        <Badge className="bg-yellow-100 text-yellow-800 flex items-center gap-1 px-3 py-1 rounded-full font-semibold">
           <Loader2 className="w-4 h-4 animate-spin" /> Pending
         </Badge>
       );
     case "rejected":
       return (
-        <Badge className="bg-red-100 text-red-800 flex items-center gap-1">
+        <Badge className="bg-red-100 text-red-800 flex items-center gap-1 px-3 py-1 rounded-full font-semibold">
           <XCircle className="w-4 h-4" /> Rejected
         </Badge>
       );
     default:
       return (
-        <Badge className="bg-gray-100 text-gray-800 flex items-center gap-1">
+        <Badge className="bg-gray-100 text-gray-800 flex items-center gap-1 px-3 py-1 rounded-full font-semibold">
           <Clock className="w-4 h-4" /> Unknown
         </Badge>
       );
@@ -63,6 +42,8 @@ const statusBadge = (status) => {
 };
 
 const AppliedJobTable = () => {
+  const { allAppliedJobs } = useSelector((state) => state?.job);
+
   return (
     <div className="overflow-x-auto rounded-2xl shadow border border-gray-100 bg-white">
       <Table>
@@ -78,19 +59,34 @@ const AppliedJobTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {appliedJobs.map((job, idx) => (
-            <TableRow key={idx} className="hover:bg-[#f7faff] transition">
-              <TableCell>{job.date}</TableCell>
-              <TableCell className="font-semibold">{job.title}</TableCell>
-              <TableCell>{job.company}</TableCell>
-              <TableCell>{statusBadge(job.status)}</TableCell>
+          {allAppliedJobs && allAppliedJobs.length > 0 ? (
+            allAppliedJobs.map((appliedJob) => (
+              <TableRow key={appliedJob._id} className="hover:bg-[#f9f5ff] transition">
+                <TableCell>
+                  {appliedJob?.createdAt
+                    ? appliedJob.createdAt.split("T")[0]
+                    : "N/A"}
+                </TableCell>
+                <TableCell className="font-semibold text-[#7209b7]">
+                  {appliedJob.job?.title.toUpperCase() || "N/A"}
+                </TableCell>
+                <TableCell>
+                  {appliedJob.job?.company?.name || "N/A"}
+                </TableCell>
+                <TableCell>
+                  {statusBadge(appliedJob.status)}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center py-8 text-gray-400">
+                You haven't applied to any jobs yet.
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
-      {appliedJobs.length === 0 && (
-        <div className="text-center text-gray-400 py-8">No applied jobs yet.</div>
-      )}
     </div>
   );
 };

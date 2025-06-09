@@ -12,14 +12,12 @@ import JobDescription from "./components/JobDescription";
 import Profile from "./components/Profile";
 import Browse from "./components/Browse";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
 
 //For protection
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state?.auth);
 
   if (!user) {
-    toast.error("Please login for these access");
     return <Navigate to="/login" />;
   }
   return children;
