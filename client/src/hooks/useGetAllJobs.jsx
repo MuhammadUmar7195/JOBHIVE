@@ -10,7 +10,7 @@ const useGetAllJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(`${JOB_API_ENDPOINT}/job/get`, {
+        const res = await axios.get(`${JOB_API_ENDPOINT}/get`, {
           withCredentials: true,
         });
 

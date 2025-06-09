@@ -89,7 +89,7 @@ const Signup = () => {
                 type="text"
                 name="fullname"
                 placeholder="John Doe"
-                value={data.fullname}
+                value={data?.fullname}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F83002] transition"
               />
@@ -102,7 +102,7 @@ const Signup = () => {
                 type="email"
                 name="email"
                 placeholder="email@gmail.com"
-                value={data.email}
+                value={data?.email}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F83002] transition"
               />
@@ -128,7 +128,7 @@ const Signup = () => {
                 type="password"
                 name="password"
                 placeholder="Password"
-                value={data.password}
+                value={data?.password}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F83002] transition"
               />
@@ -143,7 +143,7 @@ const Signup = () => {
                     type="radio"
                     name="role"
                     value="student"
-                    checked={data.role == "student"}
+                    checked={data?.role == "student"}
                     onChange={handleChange}
                     className="cursor-pointer"
                   />
@@ -156,7 +156,7 @@ const Signup = () => {
                     type="radio"
                     name="role"
                     value="recruiter"
-                    checked={data.role == "recruiter"}
+                    checked={data?.role == "recruiter"}
                     onChange={handleChange}
                     className="cursor-pointer"
                   />

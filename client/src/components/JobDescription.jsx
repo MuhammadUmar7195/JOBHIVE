@@ -33,7 +33,7 @@ const JobDescription = () => {
         const res = await axios.get(`${JOB_API_ENDPOINT}/get/${id}`, {
           withCredentials: true,
         });
-
+        
         if (res?.data?.success) {
           dispatch(setSingleJob(res?.data?.job));
           setIsApplied(
