@@ -18,7 +18,7 @@ const CompaniesTable = () => {
   const { companies, searchCompanyByText } = useSelector(
     (store) => store?.company
   );
-
+  
   const [filterCompany, setFilterCompany] = useState(companies);
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,7 +52,7 @@ const CompaniesTable = () => {
           </TableHeader>
           <TableBody>
             {filterCompany?.map((company) => (
-              <tr>
+              <tr key={company?._id}>
                 <TableCell>
                   <Avatar>
                     <AvatarImage
@@ -65,7 +65,7 @@ const CompaniesTable = () => {
                 <TableCell className="text-right cursor-pointer">
                   <Popover>
                     <PopoverTrigger>
-                      <MoreHorizontal />
+                      <MoreHorizontal className="cursor-pointer"/>
                     </PopoverTrigger>
                     <PopoverContent className="w-32">
                       <div

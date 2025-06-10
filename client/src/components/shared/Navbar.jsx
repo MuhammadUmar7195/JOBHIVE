@@ -40,11 +40,19 @@ const Navbar = () => {
     <nav className="bg-white w-full shadow-sm fixed top-0 left-0 z-50">
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-4 md:px-6 h-16">
         {/* Logo */}
-        <Link to={`/`} className="flex items-center gap-2">
-          <h1 className="text-2xl font-extrabold tracking-tight">
-            Job <span className="text-[#F83002]">Hive</span>
-          </h1>
-        </Link>
+        {user && user?.role === "student" ? (
+          <Link to={`/`} className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight">
+              Job <span className="text-[#F83002]">Hive</span>
+            </h1>
+          </Link>
+        ) : (
+          <Link to={`/admin/companies`} className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight">
+              Job <span className="text-[#F83002]">Hive</span>
+            </h1>
+          </Link>
+        )}
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-12">

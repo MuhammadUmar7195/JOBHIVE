@@ -9,6 +9,8 @@ import Browse from "./components/Browse";
 import { useSelector } from "react-redux";
 import Companies from "./components/admin/Companies";
 import AdminJobs from "./components/admin/AdminJobs";
+import CompanyCreate from "./components/admin/CompanyCreate";
+import CompanySetup from "./components/admin/CompanySetup";
 
 //For protection
 const ProtectedRoute = ({ children }) => {
@@ -62,6 +64,8 @@ const App = () => {
         {/* Admin Routes */}
         <Route path="/admin/companies" element={<Companies />} />
         <Route path="/admin/jobs" element={<AdminJobs />} />
+        <Route path="/admin/companies/create" element={<CompanyCreate />} />
+        <Route path="/admin/companies/:id" element={<CompanySetup />} />
       </Routes>
     </BrowserRouter>
   );
