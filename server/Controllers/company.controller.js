@@ -35,7 +35,8 @@ export const registerCompany = async (req, res) => {
 
 export const getCompany = async (req, res) => {
     try {
-        const userId = req.user?.id;
+        const userId = req.id;
+
         if (!userId) {
             return res.status(401).json({
                 message: "Unauthorized",

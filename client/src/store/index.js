@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import authSlice from './Slices/auth.slice';
 import jobSlice from './Slices/jobs.slice';
+import companySlice from "./Slices/company.slice";
 
 const persistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authSlice,
   job: jobSlice,
+  company: companySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
