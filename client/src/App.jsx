@@ -13,6 +13,7 @@ import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
+import NotFound from "./utils/NotFound";
 
 //For protection for student
 const ProtectedRoute = ({ children }) => {
@@ -21,12 +22,16 @@ const ProtectedRoute = ({ children }) => {
   if (!user) {
     return <Navigate to="/login" />;
   }
+  // Prevent recruiters from accessing jobs and browse
+  if (user.role === "recruiter") {
+    return <Navigate to="/admin/companies" />;
+  }
   return children;
 };
 
 const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => state?.auth);
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/" />;
   if (user.role === "student") return <Navigate to="/" />;
   return children;
 };
@@ -68,12 +73,56 @@ const App = () => {
           }
         />
         {/* Admin Routes */}
-        <Route path="/admin/companies" element={<AdminRoute><Companies /></AdminRoute>} />
-        <Route path="/admin/jobs" element={<AdminRoute><AdminJobs /></AdminRoute>} />
-        <Route path="/admin/companies/create" element={<AdminRoute><CompanyCreate /></AdminRoute>} />
-        <Route path="/admin/companies/:id" element={<AdminRoute><CompanySetup /></AdminRoute>} />
-        <Route path="/admin/jobs/create" element={<AdminRoute><PostJob /></AdminRoute>} />
-        <Route path="/admin/jobs/:id/applicants" element={<AdminRoute><Applicants /></AdminRoute>} />
+        <Route
+          path="/admin/companies"
+          element={
+            <AdminRoute>
+              <Companies />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs"
+          element={
+            <AdminRoute>
+              <AdminJobs />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/companies/create"
+          element={
+            <AdminRoute>
+              <CompanyCreate />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/companies/:id"
+          element={
+            <AdminRoute>
+              <CompanySetup />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs/create"
+          element={
+            <AdminRoute>
+              <PostJob />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs/:id/applicants"
+          element={
+            <AdminRoute>
+              <Applicants />
+            </AdminRoute>
+          }
+        />
+        {/* If page not found  */}
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   );
