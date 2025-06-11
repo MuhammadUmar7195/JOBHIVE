@@ -56,8 +56,8 @@ const CompanyCreate = () => {
             </p>
           </div>
           <div className="mb-6">
-            <Label className="block mb-2 text-gray-700 font-semibold">
-              Company Name
+            <Label className="block mb-2 text-gray-700 font-semibold ml-1">
+              Company Name <span className="text-red-500">*</span>
             </Label>
             <Input
               type="text"

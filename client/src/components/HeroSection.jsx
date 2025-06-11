@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -23,11 +23,16 @@ const HeroSection = () => {
     { month: "Jun", Students: 120, Recruiters: 35 },
   ];
 
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
   const handleSubmitQuery = (e) => {
-    console.log(query);
     e.preventDefault();
+    if (query.trim()) {
+      navigate(`/jobs?search=${encodeURIComponent(query)}`);
+    } else {
+      navigate("/jobs");
+    }
   };
 
   return (

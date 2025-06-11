@@ -21,6 +21,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -68,7 +69,7 @@ const Login = () => {
           </p>
           <div className="mb-4">
             <Label className="mb-2 block text-gray-700 font-semibold">
-              Email
+              Email <span className="text-red-500">*</span>
             </Label>
             <Input
               type="email"
@@ -81,7 +82,7 @@ const Login = () => {
           </div>
           <div className="mb-4">
             <Label className="mb-2 block text-gray-700 font-semibold">
-              Password
+              Password <span className="text-red-500">*</span>
             </Label>
             <Input
               type="password"
@@ -94,7 +95,7 @@ const Login = () => {
           </div>
           <div className="mb-6">
             <Label className="mb-2 block text-gray-700 font-semibold">
-              Register as
+              Register as <span className="text-red-500">*</span>
             </Label>
             <RadioGroup defaultValue="student" className="flex gap-8">
               <div className="flex items-center space-x-2">

@@ -83,7 +83,7 @@ const Signup = () => {
             </p>
             <div className="mb-4">
               <Label className="mb-2 block text-gray-700 font-semibold">
-                Full Name
+                Full Name <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="text"
@@ -96,7 +96,7 @@ const Signup = () => {
             </div>
             <div className="mb-4">
               <Label className="mb-2 block text-gray-700 font-semibold">
-                Email
+                Email <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="email"
@@ -109,7 +109,7 @@ const Signup = () => {
             </div>
             <div className="mb-4">
               <Label className="mb-2 block text-gray-700 font-semibold">
-                Phone Number
+                Phone Number <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="tel"
@@ -122,7 +122,7 @@ const Signup = () => {
             </div>
             <div className="mb-4">
               <Label className="mb-2 block text-gray-700 font-semibold">
-                Password
+                Password <span className="text-red-500">*</span>
               </Label>
               <Input
                 type="password"
@@ -135,7 +135,7 @@ const Signup = () => {
             </div>
             <div className="mb-6">
               <Label className="mb-2 block text-gray-700 font-semibold">
-                Register as
+                Register as <span className="text-red-500">*</span>
               </Label>
               <RadioGroup defaultValue="student" className="flex gap-8">
                 <div className="flex items-center space-x-2">

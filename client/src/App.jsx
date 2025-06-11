@@ -14,6 +14,7 @@ import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
 import NotFound from "./utils/NotFound";
+import AdminJobsSetup from "./components/admin/AdminJobsSetup";
 
 //For protection for student
 const ProtectedRoute = ({ children }) => {
@@ -110,6 +111,14 @@ const App = () => {
           element={
             <AdminRoute>
               <PostJob />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs/:id"
+          element={
+            <AdminRoute>
+              <AdminJobsSetup />
             </AdminRoute>
           }
         />

@@ -120,15 +120,16 @@ const CompanySetup = () => {
               >
                 <ArrowLeft />
                 <span>Back</span>
-              </Button>
+              </Button>              
               <h1 className="font-extrabold text-xl sm:text-2xl text-[#F83002] tracking-tight uppercase sm:ml-24">
-                Company Setup
+                company setup
               </h1>
             </div>
+            <p className="lg:text-center text-sm mb-8 text-green-500">Please provide a company logo.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <Label className="mb-1 block text-gray-700 font-semibold">
-                  Company Name
+                <Label className="mb-2 block text-gray-700 font-semibold ml-1">
+                  Company Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   type="text"
@@ -140,7 +141,7 @@ const CompanySetup = () => {
                 />
               </div>
               <div>
-                <Label className="mb-1 block text-gray-700 font-semibold">
+                <Label className="mb-2 ml-1 block text-gray-700 font-semibold">
                   Description
                 </Label>
                 <Input
@@ -153,7 +154,7 @@ const CompanySetup = () => {
                 />
               </div>
               <div>
-                <Label className="mb-1 block text-gray-700 font-semibold">
+                <Label className="mb-2 ml-1 block text-gray-700 font-semibold">
                   Website
                 </Label>
                 <Input
@@ -166,7 +167,7 @@ const CompanySetup = () => {
                 />
               </div>
               <div>
-                <Label className="mb-1 block text-gray-700 font-semibold">
+                <Label className="mb-2 ml-1 block text-gray-700 font-semibold">
                   Location
                 </Label>
                 <Input
@@ -179,7 +180,7 @@ const CompanySetup = () => {
                 />
               </div>
               <div className="md:col-span-2">
-                <Label className="mb-1 block text-gray-700 font-semibold">
+                <Label className="mb-4 ml-1 block text-gray-700 font-semibold">
                   Logo
                 </Label>
                 <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3">
