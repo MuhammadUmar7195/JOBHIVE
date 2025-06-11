@@ -12,8 +12,9 @@ import AdminJobs from "./components/admin/AdminJobs";
 import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
 import PostJob from "./components/admin/PostJob";
+import Applicants from "./components/admin/Applicants";
 
-//For protection
+//For protection for student
 const ProtectedRoute = ({ children }) => {
   const { user } = useSelector((state) => state?.auth);
 
@@ -65,6 +66,7 @@ const App = () => {
         <Route path="/admin/companies/create" element={<CompanyCreate />} />
         <Route path="/admin/companies/:id" element={<CompanySetup />} />
         <Route path="/admin/jobs/create" element={<PostJob />} />
+        <Route path="/admin/jobs/:id/applicants" element={<Applicants />} />
       </Routes>
     </BrowserRouter>
   );
