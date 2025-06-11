@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Edit2, Eye, MoreHorizontal } from "lucide-react";
+import { Delete, Edit2, Eye, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
 
 const AdminJobsTable = () => {
@@ -53,7 +53,7 @@ const AdminJobsTable = () => {
                 <TableCell className="text-right cursor-pointer">
                   <Popover>
                     <PopoverTrigger>
-                      <MoreHorizontal className="cursor-pointer"/>
+                      <MoreHorizontal className="cursor-pointer" />
                     </PopoverTrigger>
                     <PopoverContent className="w-32">
                       <div
@@ -62,6 +62,15 @@ const AdminJobsTable = () => {
                       >
                         <Edit2 className="w-4 stroke-green-500" />
                         <span>Edit</span>
+                      </div>
+                      <div
+                        onClick={() =>
+                          navigate(`/admin/jobs/${job?._id}`)
+                        }
+                        className="flex items-center gap-2 w-fit cursor-pointer mt-2"
+                      >
+                        <Delete className="w-4 stroke-red-500" />
+                        <span>Delete</span>
                       </div>
                       <div
                         onClick={() =>

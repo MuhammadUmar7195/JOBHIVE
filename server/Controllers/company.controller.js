@@ -142,6 +142,7 @@ export const deleteCompany = async (req, res) => {
                 message: "Company not found."
             });
         }
+        
         return res.status(200).json({
             success: true,
             message: "Company deleted successfully."

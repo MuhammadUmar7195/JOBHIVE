@@ -100,24 +100,23 @@ const AdminJobsSetup = () => {
   };
 
   const handleDelete = async () => {
-    // if (!window.confirm("Are you sure you want to delete this job?")) return;
-    // try {
-    //   setLoading(true);
-    //   const res = await axios.delete(
-    //     `${JOB_API_ENDPOINT}/delete/${params.id}`,
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   if (res.data.success) {
-    //     toast.success(res.data.message);
-    //     navigate("/admin/jobs");
-    //   }
-    // } catch (error) {
-    //   toast.error(error?.response?.data?.message || "Failed to delete job");
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      const res = await axios.delete(
+        `${JOB_API_ENDPOINT}/delete/${params.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/admin/jobs");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to delete job");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
