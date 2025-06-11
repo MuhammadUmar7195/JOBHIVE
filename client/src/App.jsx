@@ -11,6 +11,7 @@ import Companies from "./components/admin/Companies";
 import AdminJobs from "./components/admin/AdminJobs";
 import CompanyCreate from "./components/admin/CompanyCreate";
 import CompanySetup from "./components/admin/CompanySetup";
+import PostJob from "./components/admin/PostJob";
 
 //For protection
 const ProtectedRoute = ({ children }) => {
@@ -18,9 +19,6 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/login" />;
-  } else if (user && user.role === "recruiter") {
-    // Redirect recruiters to the recruiter page
-    return <Navigate to="/admin/companies" />;
   }
   return children;
 };
@@ -66,6 +64,7 @@ const App = () => {
         <Route path="/admin/jobs" element={<AdminJobs />} />
         <Route path="/admin/companies/create" element={<CompanyCreate />} />
         <Route path="/admin/companies/:id" element={<CompanySetup />} />
+        <Route path="/admin/jobs/create" element={<PostJob />} />
       </Routes>
     </BrowserRouter>
   );
