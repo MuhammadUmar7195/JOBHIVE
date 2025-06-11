@@ -45,6 +45,10 @@ export const applyJob = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -73,6 +77,10 @@ export const getAppliedJob = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -100,6 +108,10 @@ export const getApplicants = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -133,5 +145,9 @@ export const updateStatus = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }

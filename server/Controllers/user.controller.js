@@ -25,13 +25,13 @@ export const register = async (req, res) => {
             });
         }
 
-        let profilePhoto = ""; 
+        let profilePhoto = "";
 
         if (file) {
             const fileUri = getDataUri(file);
             const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
                 folder: "jobhive/avatar-profile",
-                resource_type: "auto", 
+                resource_type: "auto",
             });
             profilePhoto = cloudResponse.secure_url;
         }
@@ -53,6 +53,10 @@ export const register = async (req, res) => {
         });
     } catch (error) {
         console.log("Register error", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -113,6 +117,10 @@ export const login = async (req, res) => {
         });
     } catch (error) {
         console.log("Login error", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -124,6 +132,10 @@ export const logout = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 

@@ -18,8 +18,6 @@ const CompanySetup = () => {
   const params = useParams();
   const { companies } = useSelector((state) => state?.company);
 
-  
-  
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -28,7 +26,7 @@ const CompanySetup = () => {
     location: "",
     file: null,
   });
-  
+
   const changeEventHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -36,7 +34,7 @@ const CompanySetup = () => {
     const file = e.target.files?.[0];
     setData({ ...data, file });
   };
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -70,7 +68,25 @@ const CompanySetup = () => {
       setLoading(false);
     }
   };
-  
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.delete(
+        `${COMPANY_API_END_POINT}/delete/${params.id}`,
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/admin/companies");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete company");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (companies && params.id) {
       const company = companies.find((c) => c._id === params.id);
@@ -80,12 +96,12 @@ const CompanySetup = () => {
           description: company.description || "",
           website: company.website || "",
           location: company.location || "",
-          file: null, 
+          file: null,
         });
       }
     }
   }, [companies, params.id]);
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff] pb-6">
       <Navbar />
@@ -215,17 +231,29 @@ const CompanySetup = () => {
               </div>
             </div>
             {loading ? (
-              <Button className="w-full my-6" disabled>
+              <Button
+                className="w-full my-6 flex items-center justify-center gap-2 bg-gradient-to-r from-[#7209b7] to-[#b5179e] text-white font-bold text-lg rounded-xl shadow-lg transition-all duration-200 hover:from-[#560bad] hover:to-[#f72585] focus:ring-2 focus:ring-[#7209b7] focus:outline-none"
+                disabled
+              >
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>
             ) : (
-              <Button
-                type="submit"
-                className="w-full my-6 bg-[#F83002] hover:bg-[#d72600] text-white font-bold text-lg rounded-lg shadow transition cursor-pointer"
-              >
-                Update
-              </Button>
+              <>
+                <Button
+                  type="submit"
+                  className="w-full my-4 flex items-center justify-center gap-2 bg-gradient-to-r from-[#7209b7] to-[#b5179e] text-white font-bold text-lg rounded-xl shadow-lg transition-all duration-200 hover:from-[#560bad] hover:to-[#f72585] focus:ring-2 focus:ring-[#7209b7] focus:outline-none cursor-pointer"
+                >
+                  Update
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleDelete}
+                  className="w-full mb-2 flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-400 text-white font-bold text-lg rounded-xl shadow-lg transition-all duration-200 hover:from-red-700 hover:to-red-500 focus:ring-2 focus:ring-red-600 focus:outline-none cursor-pointer"
+                >
+                  Delete Company
+                </Button>
+              </>
             )}
           </div>
         </form>

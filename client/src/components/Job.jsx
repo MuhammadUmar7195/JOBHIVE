@@ -51,7 +51,7 @@ const Job = ({ job }) => {
                 )}`
               }
               alt={job?.company?.name || "Company Logo"}
-              className="object-cover"
+              className="object-cover rounded-full"
             />
           </Avatar>
           <div>

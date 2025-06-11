@@ -24,6 +24,13 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+const AdminRoute = ({ children }) => {
+  const { user } = useSelector((state) => state?.auth);
+  if (!user) return <Navigate to="/login" />;
+  if (user.role === "student") return <Navigate to="/" />;
+  return children;
+};
+
 const App = () => {
   const { user } = useSelector((state) => state?.auth);
   return (
@@ -61,12 +68,12 @@ const App = () => {
           }
         />
         {/* Admin Routes */}
-        <Route path="/admin/companies" element={<Companies />} />
-        <Route path="/admin/jobs" element={<AdminJobs />} />
-        <Route path="/admin/companies/create" element={<CompanyCreate />} />
-        <Route path="/admin/companies/:id" element={<CompanySetup />} />
-        <Route path="/admin/jobs/create" element={<PostJob />} />
-        <Route path="/admin/jobs/:id/applicants" element={<Applicants />} />
+        <Route path="/admin/companies" element={<AdminRoute><Companies /></AdminRoute>} />
+        <Route path="/admin/jobs" element={<AdminRoute><AdminJobs /></AdminRoute>} />
+        <Route path="/admin/companies/create" element={<AdminRoute><CompanyCreate /></AdminRoute>} />
+        <Route path="/admin/companies/:id" element={<AdminRoute><CompanySetup /></AdminRoute>} />
+        <Route path="/admin/jobs/create" element={<AdminRoute><PostJob /></AdminRoute>} />
+        <Route path="/admin/jobs/:id/applicants" element={<AdminRoute><Applicants /></AdminRoute>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useSelector } from "react-redux";
 import FilterCard from "./FilterCard.jsx";
 import Job from "./Job.jsx";

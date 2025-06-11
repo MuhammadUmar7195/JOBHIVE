@@ -9,12 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/store/Slices/jobs.slice";
 import toast from "react-hot-toast";
 import { MoonLoader } from "react-spinners";
-import { JOB_API_ENDPOINT, APPLICATION_API_ENDPOINT } from "../utils/api.constant.js"; // Adjust the import path as necessary
+import {
+  JOB_API_ENDPOINT,
+  APPLICATION_API_ENDPOINT,
+} from "../utils/api.constant.js"; // Adjust the import path as necessary
 
 const JobDescription = () => {
   const { user } = useSelector((state) => state?.auth);
   const { singleJob } = useSelector((state) => state?.job);
-
+  
   const isIntiallyApplied =
     singleJob?.applications?.some(
       (application) => application.applicant === user?._id
@@ -33,7 +36,7 @@ const JobDescription = () => {
         const res = await axios.get(`${JOB_API_ENDPOINT}/get/${id}`, {
           withCredentials: true,
         });
-        
+
         if (res?.data?.success) {
           dispatch(setSingleJob(res?.data?.job));
           setIsApplied(

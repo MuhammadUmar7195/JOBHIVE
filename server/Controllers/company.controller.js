@@ -30,6 +30,10 @@ export const registerCompany = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -58,6 +62,10 @@ export const getCompany = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -77,6 +85,10 @@ export const getCompanyById = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
     }
 }
 
@@ -84,20 +96,20 @@ export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
         const file = req.file;
-        
+
         let logo = "";
 
-        if(file){
+        if (file) {
             const fileUri = getDataUri(file);
             const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
                 folder: "jobhive/company-logo",
-                resource_type: "auto", 
+                resource_type: "auto",
             });
             logo = cloudResponse.secure_url;
         }
 
         const updateData = { name, description, website, location, logo };
-        
+
         const companyData = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
         if (!companyData) {
@@ -113,5 +125,32 @@ export const updateCompany = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error."
+        });
     }
 }
+
+export const deleteCompany = async (req, res) => {
+    try {
+        const companyId = req.params.id;
+        const company = await Company.findByIdAndDelete(companyId);
+        if (!company) {
+            return res.status(404).json({
+                success: false,
+                message: "Company not found."
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Company deleted successfully."
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error."
+        });
+    }
+};

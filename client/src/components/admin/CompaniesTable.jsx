@@ -10,7 +10,7 @@ import {
 } from "../ui/table";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { MenuSquareIcon, MoreHorizontal } from "lucide-react";
+import { Delete, MenuSquareIcon, MoreHorizontal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -18,20 +18,16 @@ const CompaniesTable = () => {
   const { companies, searchCompanyByText } = useSelector(
     (store) => store?.company
   );
-  
+
   const [filterCompany, setFilterCompany] = useState(companies);
   const navigate = useNavigate();
   useEffect(() => {
-    const filteredCompany =
-      companies.length >= 0 &&
-      companies.filter((company) => {
-        if (!searchCompanyByText) {
-          return true;
-        }
-        return company?.name
-          ?.toLowerCase()
-          .includes(searchCompanyByText.toLowerCase());
-      });
+    const filteredCompany = companies.filter((company) => {
+      if (!searchCompanyByText) return true;
+      return company?.name
+        ?.toLowerCase()
+        .includes(searchCompanyByText.toLowerCase());
+    });
     setFilterCompany(filteredCompany);
   }, [companies, searchCompanyByText]);
 
@@ -65,7 +61,7 @@ const CompaniesTable = () => {
                 <TableCell className="text-right cursor-pointer">
                   <Popover>
                     <PopoverTrigger>
-                      <MoreHorizontal className="cursor-pointer"/>
+                      <MoreHorizontal className="cursor-pointer" />
                     </PopoverTrigger>
                     <PopoverContent className="w-32">
                       <div
@@ -74,8 +70,17 @@ const CompaniesTable = () => {
                         }
                         className="flex items-center gap-2 w-fit cursor-pointer"
                       >
-                        <MenuSquareIcon className="w-4" />
+                        <MenuSquareIcon className="w-4 stroke-green-500" />
                         <span>Edit</span>
+                      </div>
+                      <div
+                        onClick={() =>
+                          navigate(`/admin/companies/${company?._id}`)
+                        }
+                        className="flex items-center gap-2 w-fit cursor-pointer mt-2"
+                      >
+                        <Delete className="w-4 stroke-red-500" />
+                        <span>Delete</span>
                       </div>
                     </PopoverContent>
                   </Popover>
@@ -84,6 +89,11 @@ const CompaniesTable = () => {
             ))}
           </TableBody>
         </Table>
+        {filterCompany.length === 0 && (
+          <div className="text-center text-gray-400 py-8 text-lg">
+            No companies found.
+          </div>
+        )}
       </div>
     </>
   );
