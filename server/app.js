@@ -2,6 +2,8 @@ import express from "express";
 import cookie from "cookie-parser";
 import env from "dotenv";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import connect from "./Utils/connect.js";
 const app = express();
 env.config();
@@ -16,6 +18,11 @@ const corOption = {
     credentials: true
 }
 app.use(cors(corOption));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "dist")));
 
 //environment variable
 const port = process.env.PORT || 5000;
