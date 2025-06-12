@@ -184,7 +184,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 htmlFor="profilePhoto"
                 className="text-right font-semibold text-[#6A38C2]"
               >
-                Profile Photo
+                Photo
               </Label>
               <Input
                 id="profilePhoto"

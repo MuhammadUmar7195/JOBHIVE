@@ -13,13 +13,17 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f3e8ff] to-[#f7faff] pb-10">
       <Navbar />
-      <ViewProfile setOpen={setOpen}/>
-      {/* Applied Jobs */}
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 mt-8 p-6">
-        <h2 className="font-bold text-lg mb-4 text-[#F83002]">Applied Jobs</h2>
-        <AppliedJobTable />
-      </div>
-      <UpdateProfileDialog open={open} setOpen={setOpen} />
+      <main className="w-full max-w-full overflow-x-hidden">
+        <ViewProfile setOpen={setOpen} />
+        {/* Applied Jobs */}
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 mt-8 p-6">
+          <h2 className="font-bold text-lg mb-4 text-[#F83002]">
+            Applied Jobs
+          </h2>
+          <AppliedJobTable />
+        </div>
+        <UpdateProfileDialog open={open} setOpen={setOpen} />
+      </main>
     </div>
   );
 };

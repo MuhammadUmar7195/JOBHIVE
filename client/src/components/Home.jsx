@@ -13,18 +13,20 @@ const Home = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state?.auth);
   useEffect(() => {
-    if(user?.role === "recruiter"){
+    if (user?.role === "recruiter") {
       navigate("/admin/companies");
     }
   }, [navigate, user]);
-  
+
   return (
     <>
       <Navbar />
-      <HeroSection/>
-      <CategoryCarousel/>
-      <LatestJob/>
-      <Footer/>
+      <main className="w-full max-w-full overflow-x-hidden">
+        <HeroSection />
+        <CategoryCarousel />
+        <LatestJob />
+      </main>
+      <Footer />
     </>
   );
 };
