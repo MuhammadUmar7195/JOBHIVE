@@ -11,12 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Loader2, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { setUser } from "@/store/Slices/auth.slice";
-import { USER_API_ENDPOINT } from "../utils/api.constant.js"; // Adjust the import path as necessary
-
+import { USER_API_ENDPOINT } from "../utils/api.constant.js";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
@@ -30,7 +29,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     skills: Array.isArray(user?.profile?.skills)
       ? user.profile.skills.join(", ")
       : user?.profile?.skills || "",
-    file: user?.profile?.resume || "",
+    resume: null,
+    profilePhoto: null,
   });
 
   const dispatch = useDispatch();
@@ -39,9 +39,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  // Separate file handlers for resume and profile photo
   const fileChangeHandler = (e) => {
-    const file = e.target.files?.[0];
-    setData({ ...data, file });
+    const { name, files } = e.target;
+    setData({ ...data, [name]: files?.[0] || null });
   };
 
   const submitHandler = async (e) => {
@@ -52,18 +53,26 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     formData.append("phoneNumber", data?.phoneNumber);
     formData.append("bio", data?.bio);
     formData.append("skills", data?.skills);
-    if (data?.file) {
-      formData.append("file", data?.file);
+
+    if (data.profilePhoto) {
+      formData.append("file", data?.profilePhoto); // for profile photo
     }
-    
+    if (data.resume) {
+      formData.append("resume", data?.resume); // for resume
+    }
+
     try {
       setLoading(true);
-      const res = await axios.post(`${USER_API_ENDPOINT}/profile/update`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/profile/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
 
       if (res?.data?.success) {
         dispatch(setUser(res?.data?.user));
@@ -86,9 +95,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               Update Profile
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription>
-            {/*I use to remove warning on console so ignore it*/}
-          </DialogDescription>
+          <DialogDescription />
         </div>
         <form onSubmit={submitHandler}>
           <div className="grid gap-4 py-4">
@@ -103,7 +110,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 id="name"
                 name="fullname"
                 type="text"
-                value={data.fullname}
+                value={data?.fullname}
                 onChange={changeEventHandler}
                 className="col-span-3"
                 required
@@ -120,7 +127,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 id="email"
                 name="email"
                 type="email"
-                value={data.email}
+                value={data?.email}
                 onChange={changeEventHandler}
                 className="col-span-3"
                 required
@@ -136,7 +143,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               <Input
                 id="number"
                 name="phoneNumber"
-                value={data.phoneNumber}
+                value={data?.phoneNumber}
                 onChange={changeEventHandler}
                 className="col-span-3"
               />
@@ -151,7 +158,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               <Input
                 id="bio"
                 name="bio"
-                value={data.bio}
+                value={data?.bio}
                 onChange={changeEventHandler}
                 className="col-span-3"
               />
@@ -166,7 +173,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               <Input
                 id="skills"
                 name="skills"
-                value={data.skills}
+                value={data?.skills}
                 onChange={changeEventHandler}
                 className="col-span-3"
                 placeholder="e.g. React, Node, MongoDB"
@@ -174,14 +181,30 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label
-                htmlFor="file"
+                htmlFor="profilePhoto"
+                className="text-right font-semibold text-[#6A38C2]"
+              >
+                Profile Photo
+              </Label>
+              <Input
+                id="profilePhoto"
+                name="profilePhoto"
+                type="file"
+                accept="image/*"
+                onChange={fileChangeHandler}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="resume"
                 className="text-right font-semibold text-[#6A38C2]"
               >
                 Resume
               </Label>
               <Input
-                id="file"
-                name="file"
+                id="resume"
+                name="resume"
                 type="file"
                 accept="application/pdf"
                 onChange={fileChangeHandler}

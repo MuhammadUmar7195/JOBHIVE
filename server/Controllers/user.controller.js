@@ -162,15 +162,36 @@ export const updateProfile = async (req, res) => {
             });
         }
 
+        if (email !== user.email) {
+            const emailExists = await User.findOne({ email });
+            if (emailExists) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Email already in use by another account."
+                });
+            }
+        }
+
         user.fullname = fullname;
         user.email = email;
         user.phoneNumber = phoneNumber;
         user.profile.bio = bio;
         user.profile.skills = skillArray;
 
+        // for profile photo
         if (file) {
-            const fileUri = getDataUri(file);
-            const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+            const fileUri1 = getDataUri(file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri1.content, {
+                folder: "jobhive/avatar-profile", // same as register
+                resource_type: "auto",
+            });
+            user.profile.profilePhoto = cloudResponse.secure_url;
+        }
+
+        // for resume photo
+        if (file) {
+            const fileUri2 = getDataUri(file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri2.content, {
                 folder: "jobhive/resume",
                 resource_type: "raw",
                 type: "upload"
