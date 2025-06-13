@@ -3,6 +3,7 @@ import argon from "argon2";
 import jwt from "jsonwebtoken";
 import getDataUri from "../Utils/datauri.js";
 import cloudinary from "../Utils/cloudinary-setup.js";
+import { generateOTP, transporter } from "../Utils/nodemailer.js";
 
 export const register = async (req, res) => {
     try {
@@ -223,3 +224,162 @@ export const updateProfile = async (req, res) => {
         });
     }
 };
+
+// Forget password logic here
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found with this email"
+            });
+        }
+
+        // Generate OTP
+        const otp = generateOTP();
+        const otpExpiry = Date.now() + 15 * 60 * 1000; // OTP valid for 15 minutes
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Password Reset OTP',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2563eb;">Password Reset Request</h2>
+                    <p>You requested to reset your password. Here is your OTP:</p>
+                    <h3 style="background: #f3f4f6; display: inline-block; padding: 10px 20px; border-radius: 5px;">${otp}</h3>
+                    <p>This OTP is valid for 15 minutes.</p>
+                    <p>If you didn't request this, please ignore this email.</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        //To save otp or expiry time in schema
+        user.otp = otp;
+        user.otpExpiry = otpExpiry;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP sent to your email"
+        });
+    } catch (error) {
+        console.log("Forgot Route error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error."
+        });
+    }
+}
+
+export const verifyOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and OTP are required"
+            });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found with this email"
+            });
+        }
+
+        // Check OTP and expiry
+        if (
+            !user.otp ||
+            !user.otpExpiry ||
+            user.otp !== otp ||
+            user.otpExpiry < Date.now()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired OTP"
+            });
+        }
+
+        user.otp = null;
+        user.otpExpiry = null;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP verified successfully"
+        });
+    } catch (error) {
+        console.log("Verify OTP Route error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error."
+        });
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+
+        if (!email || !newPassword || !confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Email, new password, and confirm password are required"
+            });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Passwords do not match"
+            });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Optionally: Check if OTP is already verified (e.g., user.otp == null)
+        if (user.otp || user.otpExpiry) {
+            return res.status(400).json({
+                success: false,
+                message: "OTP verification required before resetting password"
+            });
+        }
+
+        user.password = await argon.hash(newPassword);
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Password reset successfully"
+        });
+    } catch (error) {
+        console.log("Reset Password Route error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error."
+        });
+    }
+}

@@ -15,6 +15,8 @@ import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
 import NotFound from "./utils/NotFound";
 import AdminJobsSetup from "./components/admin/AdminJobsSetup";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 //For protection for student
 const ProtectedRoute = ({ children }) => {
@@ -45,6 +47,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/jobs"
           element={

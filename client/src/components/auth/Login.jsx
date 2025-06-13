@@ -31,7 +31,7 @@ const Login = () => {
     const formData = new FormData();
     formData.append("email", data?.email);
     formData.append("password", data?.password);
-    formData.append("role", data?.role); 
+    formData.append("role", data?.role);
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, formData, {
@@ -142,7 +142,14 @@ const Login = () => {
               Login
             </Button>
           )}
-
+          <div className="flex justify-start mt-2 mb-4">
+            <Link
+              to="/forgot-password"
+              className="text-xs text-[#6A38C2] hover:underline font-semibold transition mt-2"
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <p className="text-center text-sm text-gray-500 mt-4">
             If you don't have an account?{" "}
             <Link
