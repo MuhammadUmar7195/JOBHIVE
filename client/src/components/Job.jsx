@@ -62,7 +62,11 @@ const Job = ({ job }) => {
 
         <div>
           <h1 className="font-bold text-lg my-2">{job?.title}</h1>
-          <p className="text-sm text-gray-600">{job?.description}</p>
+          <p className="text-sm text-gray-600">
+            {job?.description && job.description.length > 300
+              ? job.description.slice(0, 300) + "..."
+              : job?.description}
+          </p>
         </div>
         {/* Improved, compact badges */}
         <div className="flex flex-wrap items-center gap-1 mt-4">
@@ -84,7 +88,6 @@ const Job = ({ job }) => {
           >
             Details
           </Button>
-          
         </div>
       </div>
     </div>

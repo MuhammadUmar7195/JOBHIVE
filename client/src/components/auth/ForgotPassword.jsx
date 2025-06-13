@@ -144,7 +144,7 @@ const ForgotPassword = () => {
                 type="submit"
                 className="w-full bg-[#F83002] hover:bg-[#d72600] text-white font-bold py-2 rounded-lg transition cursor-pointer"
               >
-                Send Reset Link
+                Send 
               </Button>
             ))}
           <div className="flex justify-center mt-4">

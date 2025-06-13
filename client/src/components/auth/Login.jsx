@@ -142,7 +142,7 @@ const Login = () => {
               Login
             </Button>
           )}
-          <div className="flex justify-start mt-2 mb-4">
+          <div className="flex justify-start mt-1 mb-4 ml-1">
             <Link
               to="/forgot-password"
               className="text-xs text-[#6A38C2] hover:underline font-semibold transition mt-2"
