@@ -34,7 +34,7 @@ JobHive is a modern job portal web application that connects students and recrui
 
 ### Home Page
 
-[![Home Page](data/homepage.png)](data/homepage.png)
+[![Home Page](data/Home.png)](data/Home.png)
 
 ### Login Page
 
@@ -83,7 +83,7 @@ EMAIL_USER = your_gmail_address #sender email
 EMAIL_PASSWORD = your_gmail_app_password # sender email app security password
 ```
 
-**Email_Password is a 16 digit google password which you can find in your gmail security app passwords. So don't confuse it.**
+**Email_Password is a 16-digit Google password which you can find in your Gmail security app passwords. So please don't confuse it.**
 
 ### Usage
 
