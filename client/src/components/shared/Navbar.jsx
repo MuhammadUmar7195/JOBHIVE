@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 import { Button } from "../ui/button.jsx";
-import { LogOut, User2, Menu } from "lucide-react";
+import { LogOut, User2, Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -187,9 +187,13 @@ const Navbar = () => {
           <Button
             className="p-2 rounded-md bg-gray-100 transition cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Open Menu"
+            aria-label={mobileOpen ? "Close Menu" : "Open Menu"}
           >
-            <Menu size={28} className="text-[#F83002]" />
+            {mobileOpen ? (
+              <X size={28} className="text-[#F83002]" />
+            ) : (
+              <Menu size={28} className="text-[#F83002]" />
+            )}
           </Button>
         </div>
       </div>
