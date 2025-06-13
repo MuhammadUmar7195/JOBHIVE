@@ -30,6 +30,24 @@ JobHive is a modern job portal web application that connects students and recrui
 - MongoDB Atlas account
 - Gmail account for sending OTP emails (App Password required)
 
+## Screenshots
+
+### Home Page
+
+[![Home Page](data/homepage.png)](data/homepage.png)
+
+### Login Page
+
+![Login Page](data/Login.png)
+
+### Filter Page
+
+![Filter Page](data/FilterCards.png)
+
+### Dashboard
+
+![Admin](data/Admin.png)
+
 ### Installation
 
 1. **Clone the repository:**
@@ -37,52 +55,57 @@ JobHive is a modern job portal web application that connects students and recrui
    git clone https://github.com/yourusername/JobHive.git
    cd JobHive
    ```
-2. **Backend Setup:**
-   ```bash
-   cd server
-   npm install
-   npm run dev
-   ```
-3. **Frontend Setup:**
+2. **Frontend Setup:**
    ```bash
    cd client
    npm install
    npm run dev
    ```
+3. **Backend Setup:**
+   ```bash
+   cd server
+   npm install
+   npm start
+   ```
 4. **Environment Variable**
 
-**Create a ```.env``` file in the server directory with the following:**
+**Create a `.env` file in the server directory with the following:**
 
-   ```env
-   PORT = 8000
-   DB_URL = your_mongodb_connection_string
-   SECRET_KEY = your_secret_key
-   CLOUD_NAME = your_cloudinary_cloud_name
-   CLOUD_API_KEY = your_cloudinary_api_key
-   CLOUD_API_SECRET = your_cloudinary_api_secret
-   EMAIL_SERVICE = gmail
-   EMAIL_USER = your_gmail_address #sender email
-   EMAIL_PASSWORD = your_gmail_app_password # sender email app security password
-   ```
+```env
+PORT = 8000
+DB_URL = your_mongodb_connection_string
+SECRET_KEY = your_secret_key
+CLOUD_NAME = your_cloudinary_cloud_name
+CLOUD_API_KEY = your_cloudinary_api_key
+CLOUD_API_SECRET = your_cloudinary_api_secret
+EMAIL_SERVICE = gmail
+EMAIL_USER = your_gmail_address #sender email
+EMAIL_PASSWORD = your_gmail_app_password # sender email app security password
+```
+
 **Email_Password is a 16 digit google password which you can find in your gmail security app passwords. So don't confuse it.**
 
 ### Usage
+
 - Visit http://localhost:3000 to access the frontend.
 - Register as a student or recruiter.
 - Students can browse and apply for jobs.
 - Recruiters can post and manage jobs.
-- Use "Forgot Password" to reset your password via ```OTP 6 Digits```.
+- Use "Forgot Password" to reset your password via `OTP 6 Digits`.
 
 #### JobHive/
+
 ```
+├── data/           # Screenshots
 ├── client/         # React frontend
 ├── server/         # Node.js/Express backend
-├── License.md 
+├── License.md
 ├── (!)Readme.md
 ```
+
 #### Contribution
 
-Contributions are welcome!  If you want to contribute to JobHive:
+Contributions are welcome! If you want to contribute to JobHive:
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature`).
